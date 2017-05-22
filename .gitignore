@@ -54,12 +54,9 @@ dkms.conf
 
 #clion
 .idea/
-#CMakeLists.txt
+CMakeLists.txt
 cmake-build-debug/
-Supprimerait main.c
 
-cmake-build-debug/
 CMakeFiles/
-#CMakeCache.txt/
 Supprimerait cmake_install.cmake
 subjects/

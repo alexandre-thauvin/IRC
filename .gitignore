@@ -60,6 +60,6 @@ Supprimerait main.c
 
 cmake-build-debug/
 CMakeFiles/
-CMakeCache.txt/
+#CMakeCache.txt/
 Supprimerait cmake_install.cmake
 subjects/

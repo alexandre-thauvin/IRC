@@ -35,7 +35,8 @@ void 		handle_client(t_client *clt, t_serv *serv)
   serv->client = clt;
   serv->tab = ma2d(9, 12);
   serv->tab = fill_tab(serv->tab);
-  dprintf(serv->client->fd, "220 All rights\r\n");
+  printf("ici\n");
+  dprintf(clt->fd, "220 All rights\r\n");
   while (read(clt->fd, buf, 512) > 0)
     fill_buff(buf, serv, &buf_tmp);
 }
@@ -84,7 +85,7 @@ int		main(int ac, char **av)
   }
   while (1)
   {
-    clt.fd = accept(clt.fd, (struct sockaddr *)
+    clt.fd = accept(serv.fd, (struct sockaddr *)
      &clt.s_in_client, &s_in_size);
     if (clt.fd > 0)
       handle_client(&clt, &serv);

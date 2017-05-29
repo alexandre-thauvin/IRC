@@ -5,7 +5,7 @@
 ## Login   <thauvi_a@epitech.net>
 ##
 ## Started on  Mon Jan 30 10:44:20 2017 Alexandre Thauvin
-## Last update Mon May 22 13:53:46 2017 Alexandre Thauvin
+## Last update Mon May 29 11:08:57 2017 Alexandre Thauvin
 ##
 
 SERVER	= server
@@ -16,11 +16,15 @@ DIR1    = src/client/
 
 DIR2    = src/server/
 
-RULE	= 2
+#RULE	= 2
 
 SRC1    = $(DIR1)main.c
 
-SRC2    = $(DIR2)main.c
+SRC2    = $(DIR2)main.c \
+	$(DIR2)tools.c \
+	$(DIR2)default.c \
+	$(DIR2)cmd.c \
+	$(DIR2)auth.c
 
 OBJ1	= $(SRC1:.c=.o)
 
@@ -47,7 +51,7 @@ $(SERVER): $(OBJ2)
 all: $(CLIENT) $(SERVER)
 
 .c.o:
-	$(GCC) $(CFLAGS) -c $< -o $@
+	$(GCC) $(CFLAGS) $(INC1) $(INC2) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ1)

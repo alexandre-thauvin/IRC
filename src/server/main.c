@@ -9,7 +9,7 @@
 */
 
 #include <stdio.h>
-#include "ftp.h"
+#include "server.h"
 
 char		**fill_tab(char **tab)
 {
@@ -67,7 +67,7 @@ void		init_var(t_client *init, char **av)
 int		main(int ac, char **av)
 {
   t_client	init;
-  pid_t 	fpid;
+  //pid_t 	fpid;
 
   if (ac != 3)
   {

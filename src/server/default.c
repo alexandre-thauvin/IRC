@@ -8,7 +8,7 @@
 ** Last update Sun May 22 15:16:35 2017 Alexandre Thauvin
 */
 
-#include "ftp.h"
+#include "server.h"
 
 int	nb_line(char **tab)
 {
@@ -22,7 +22,7 @@ int	nb_line(char **tab)
 
 void	choice(t_cmd *cmd)
 {
-  void		(*func[8])(t_cmd *) = {f_nick, f_list, f_join, f_part,
+  void		(*func[9])(t_cmd *) = {f_nick, f_list, f_join, f_part,
 				       f_users, f_names, f_msg, f_send_file, f_accept_file};
   void		(*funci)(t_cmd *);
   int	i;
@@ -30,7 +30,7 @@ void	choice(t_cmd *cmd)
   i = 0;
   while (cmd->tab[i] != NULL && strcmp(cmd->cmd[0], cmd->tab[i]) != 0)
     i++;
-  if (i >= 7)
+  if (i >= 8)
   {
     funci = func[i];
     (*funci)(cmd);

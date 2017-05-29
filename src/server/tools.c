@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "ftp.h"
+#include "server.h"
 
 void		default_buff(t_cmd *cmd, char * buf)
 {

@@ -23,11 +23,13 @@ typedef struct 		s_client
   char 			*nickname;
   char 			*read_buffer;
   char 			*write_buffer;
+  struct s_client	*first;
+  struct s_client	*next;
 }			t_client;
 
 typedef struct 		s_serv
 {
-  int	fd;
+  int			fd;
   struct sockaddr_in	s_in;
   int 			port;
   struct protoent	*pe;

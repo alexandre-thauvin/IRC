@@ -67,13 +67,21 @@ int		main(int ac, char **av)
     printf("Usage: ./server port\n");
     return (1);
   }
-  if (clt_var(av, &serv) == 1)
+  if (clt_var(av, &serv) == 1) {
+    printf("ici\n");
     return (1);
+  }
   s_in_size = sizeof(clt.s_in_client);
-  if (bind(clt.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in)) == -1)
+  if (bind(serv.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in)) == -1) {
+    printf("la\n");
+
     return (1);
-  if (listen (clt.fd, 42 == -1) == -1)
+  }
+  if (listen (serv.fd, 42 == -1) == -1) {
+    printf("PROIT\n");
+
     return (1);
+  }
   while (1)
   {
     clt.fd = accept(clt.fd, (struct sockaddr *)
@@ -81,5 +89,6 @@ int		main(int ac, char **av)
     if (clt.fd > 0)
       handle_client(&clt, &serv);
   }
+  return 0;
   close(clt.fd);
 }

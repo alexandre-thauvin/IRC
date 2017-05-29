@@ -45,7 +45,7 @@ int		clt_var(char **av, t_serv *serv)
   serv->port = atoi(av[1]);
   serv->pe = getprotobyname("TCP");
   if (!serv->pe)
-    exit(1);
+    return (1);
   serv->s_in.sin_family = AF_INET;
   serv->s_in.sin_port = htons(serv->port);
   serv->s_in.sin_addr.s_addr = INADDR_ANY;
@@ -72,19 +72,13 @@ int		main(int ac, char **av)
     return (1);
   }
   s_in_size = sizeof(clt.s_in_client);
-  if (bind(serv.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in)) == -1) {
-    printf("la\n");
-
+  if (bind(serv.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in)) == -1)
     return (1);
-  }
-  if (listen (serv.fd, 42 == -1) == -1) {
-    printf("PROIT\n");
-
+  if (listen (serv.fd, 42 == -1) == -1)
     return (1);
-  }
   while (1)
   {
-    clt.fd = accept(clt.fd, (struct sockaddr *)
+    clt.fd = accept(serv.fd, (struct sockaddr *)
      &clt.s_in_client, &s_in_size);
     if (clt.fd > 0)
       handle_client(&clt, &serv);

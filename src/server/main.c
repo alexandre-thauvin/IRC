@@ -25,62 +25,57 @@ char		**fill_tab(char **tab)
   return (tab);
 }
 
-void 		handle_client(t_client *init)
+void 		handle_client(t_client *clt, t_serv *serv)
 {
   char 		buf[512];
-  t_data	dat;
-  t_cmd		cmd;
+  char		*buf_tmp;
 
-  cmd.client = init;
-  dat.isConnect = false;
-  cmd.data = &dat;
-  cmd.buf_tmp = NULL;
-  cmd.tab = ma2d(9, 12);
-  cmd.tab = fill_tab(cmd.tab);
-  dprintf(cmd.client->client_fd, "220 All rights\r\n");
-  while (read(init->client_fd, buf, 512) > 0)
-    fill_buff(buf, &cmd);
+  buf_tmp = NULL;
+  serv->client = clt;
+  serv->tab = ma2d(9, 12);
+  serv->tab = fill_tab(serv->tab);
+  dprintf(serv->client->fd, "220 All rights\r\n");
+  while (read(clt->fd, buf, 512) > 0)
+    fill_buff(buf, serv, &buf_tmp);
 }
 
-void		init_var(t_client *init, char **av)
+void		clt_var(t_client *clt, char **av, t_serv *serv)
 {
-  init->s_in_size = sizeof(init->s_in_client);
-  init->port = atoi(av[1]);
-  init->pe = getprotobyname("TCP");
-  if (!init->pe)
+  serv->port = atoi(av[1]);
+  serv->pe = getprotobyname("TCP");
+  if (!serv->pe)
     exit(1);
-  init->s_in.sin_family = AF_INET;
-  init->s_in.sin_port = htons(init->port);
-  init->s_in.sin_addr.s_addr = INADDR_ANY;
-  init->path = (char *)malloc((strlen(av[2]) + 1) * sizeof(char));
-  init->path = strcpy(init->path, av[2]);
-  if (chdir(init->path) != 0)
-  {
-    printf("bad path\n");
-    exit(1);
-  }
-  init->fd = socket(AF_INET, SOCK_STREAM, init->pe->p_proto);
-  if (init->fd == -1)
+  serv->s_in.sin_family = AF_INET;
+  serv->s_in.sin_port = htons(serv->port);
+  serv->s_in.sin_addr.s_addr = INADDR_ANY;
+  clt->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
+  if (clt->fd == -1)
     exit(1);
 }
 
 int		main(int ac, char **av)
 {
-  t_client	init;
+  t_client	clt;
+  t_serv	serv;
   //pid_t 	fpid;
+  socklen_t 	s_in_size;
+
 
   if (ac != 3)
   {
     printf("Usage: ./server port\n");
     return (1);
   }
-  init_var(&init, av);
-  bind(init.fd, (const struct sockaddr *)&init.s_in, sizeof(init.s_in));
-  listen (init.fd, 42 == -1);
+  clt_var(&clt, av, &serv);
+  s_in_size = sizeof(clt.s_in_client);
+  bind(clt.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in));
+  listen (clt.fd, 42 == -1);
   while (1)
   {
-    init.client_fd = accept(init.fd, (struct sockaddr *)
-     &init.s_in_client, &init.s_in_size);
+    clt.fd = accept(clt.fd, (struct sockaddr *)
+     &clt.s_in_client, &s_in_size);
+    if (clt.fd > 0)
+      handle_client(&clt, &serv);
   }
-  close(init.fd);
+  close(clt.fd);
 }

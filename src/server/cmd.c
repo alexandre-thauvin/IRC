@@ -5,26 +5,26 @@
 #include "server.h"
 
 
-void 	f_nick(t_cmd *cmd)
+void 	f_nick(t_serv *cmd)
 {
   (void)cmd;
 }
 
-void 	f_list(t_cmd *cmd)
+void 	f_list(t_serv *cmd)
 {
   (void)cmd;
 }
-void 	f_join(t_cmd *cmd)
-{
-  (void)cmd;
-}
-
-void 	f_part(t_cmd *cmd)
+void 	f_join(t_serv *cmd)
 {
   (void)cmd;
 }
 
-void 	f_users(t_cmd *cmd)
+void 	f_part(t_serv *cmd)
+{
+  (void)cmd;
+}
+
+void 	f_users(t_serv *cmd)
 {
   (void)cmd;
 }

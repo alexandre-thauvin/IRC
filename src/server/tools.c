@@ -12,40 +12,42 @@
 #include <stdlib.h>
 #include "server.h"
 
-void		default_buff(t_cmd *cmd, char * buf)
+void		default_buff(char *buf, char **buf_tmp)
 {
-  if (cmd->buf_tmp == NULL)
+  if (*buf_tmp == NULL)
   {
-    cmd->buf_tmp = (char *) malloc((strlen(buf) + 1) * sizeof(char));
-    cmd->buf_tmp = strcpy(cmd->buf_tmp, buf);
+    *buf_tmp = (char *) malloc((strlen(buf) + 1) * sizeof(char));
+    *buf_tmp = strcpy(*buf_tmp, buf);
   }
   else
-    cmd->buf_tmp = strcat(cmd->buf_tmp, buf);
+    *buf_tmp = strcat(*buf_tmp, buf);
 }
 
-void		fill_buff(char *buf, t_cmd *cmd)
+void		fill_buff(char *buf, t_serv *serv, char **buf_tmp)
 {
+  int		nb_w;
+
   if (check_end(buf))
   {
-    if (cmd->buf_tmp == NULL)
+    if (*buf_tmp == NULL)
     {
-      cmd->nb_w = nb_word(buf);
-      cmd->cmd = ma2d(cmd->nb_w + 1, 30);
-      cmd->cmd = cmd_to_tab(buf, cmd->cmd, cmd->nb_w);
+      nb_w = nb_word(buf);
+      serv->cmd = ma2d(nb_w + 1, 30);
+      serv->cmd = cmd_to_tab(buf, serv->cmd, nb_w);
     }
     else
     {
-      cmd->buf_tmp = strcat(cmd->buf_tmp, buf);
-      cmd->nb_w = nb_word(cmd->buf_tmp);
-      cmd->cmd = ma2d(cmd->nb_w + 1, 30);
-      cmd->cmd = cmd_to_tab(cmd->buf_tmp, cmd->cmd, cmd->nb_w);
-      cmd->buf_tmp = NULL;
+      *buf_tmp = strcat(*buf_tmp, buf);
+      nb_w = nb_word(*buf_tmp);
+      serv->cmd = ma2d(nb_w + 1, 30);
+      serv->cmd = cmd_to_tab(*buf_tmp, serv->cmd, nb_w);
+      *buf_tmp = NULL;
 
     }
-    choice(cmd);
+    choice(serv);
   }
   else
-    default_buff(cmd, buf);
+    default_buff(buf, buf_tmp);
 }
 
 unsigned int 	nb_word(char *line)

@@ -20,11 +20,11 @@ int	nb_line(char **tab)
   return (i);
 }
 
-void	choice(t_cmd *cmd)
+void	choice(t_serv *cmd)
 {
-  void		(*func[9])(t_cmd *) = {f_nick, f_list, f_join, f_part,
+  void		(*func[9])(t_serv *) = {f_nick, f_list, f_join, f_part,
 				       f_users, f_names, f_msg, f_send_file, f_accept_file};
-  void		(*funci)(t_cmd *);
+  void		(*funci)(t_serv *);
   int	i;
 
   i = 0;
@@ -36,11 +36,12 @@ void	choice(t_cmd *cmd)
     (*funci)(cmd);
   }
   else
-    dprintf(cmd->client->client_fd, "500 Unknown command.\r\n");
+    dprintf(cmd->client->fd, "500 Unknown command.\r\n");
 }
 
 bool 	check_end(char *line)
 {
+  //todo check \r\n
   int	i;
 
   i = 0;

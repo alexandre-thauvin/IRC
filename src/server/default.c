@@ -10,16 +10,6 @@
 
 #include "server.h"
 
-int	nb_line(char **tab)
-{
-  int i;
-
-  i = 0;
-  while (tab[i] != NULL)
-    i++;
-  return (i);
-}
-
 void	choice(t_serv *cmd)
 {
   void		(*func[9])(t_serv *) = {f_nick, f_list, f_join, f_part,

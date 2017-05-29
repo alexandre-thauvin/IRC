@@ -41,14 +41,13 @@ INC1    = -I ./includes/client/
 INC2    = -I ./includes/server/
 
 
-$(CLIENT): $(OBJ1)
-	$(GCC) $(OBJ1) -o $(CLIENT) $(CFLAGS) $(INC1)
-
-
 $(SERVER): $(OBJ2)
 	$(GCC) $(OBJ2) -o $(SERVER) $(CFLAGS) $(INC2)
 
-all: $(CLIENT) $(SERVER)
+$(CLIENT): $(OBJ1)
+	$(GCC) $(OBJ1) -o $(CLIENT) $(CFLAGS) $(INC1)
+
+all: $(SERVER) $(CLIENT)
 
 .c.o:
 	$(GCC) $(CFLAGS) $(INC1) $(INC2) -c $< -o $@

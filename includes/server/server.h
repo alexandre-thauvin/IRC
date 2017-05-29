@@ -39,7 +39,6 @@ typedef struct 		s_serv
 }			t_serv;
 
 void		choice(t_serv *);
-int		nb_line(char **tab);
 void		default_buff(char *, char **);
 void		fill_buff(char*, t_serv *, char **);
 char 		**ma2d(int, int);

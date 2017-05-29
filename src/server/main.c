@@ -31,6 +31,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
   char		*buf_tmp;
 
   buf_tmp = NULL;
+  //addToChain
   serv->client = clt;
   serv->tab = ma2d(9, 12);
   serv->tab = fill_tab(serv->tab);
@@ -39,7 +40,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
     fill_buff(buf, serv, &buf_tmp);
 }
 
-int		clt_var(t_client *clt, char **av, t_serv *serv)
+int		clt_var(char **av, t_serv *serv)
 {
   serv->port = atoi(av[1]);
   serv->pe = getprotobyname("TCP");
@@ -48,8 +49,8 @@ int		clt_var(t_client *clt, char **av, t_serv *serv)
   serv->s_in.sin_family = AF_INET;
   serv->s_in.sin_port = htons(serv->port);
   serv->s_in.sin_addr.s_addr = INADDR_ANY;
-  clt->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
-  if (clt->fd == -1)
+  serv->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
+  if (serv->fd == -1)
     return (1);
   return (0);
 }
@@ -66,7 +67,7 @@ int		main(int ac, char **av)
     printf("Usage: ./server port\n");
     return (1);
   }
-  if (clt_var(&clt, av, &serv) == 1)
+  if (clt_var(av, &serv) == 1)
     return (1);
   s_in_size = sizeof(clt.s_in_client);
   if (bind(clt.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in)) == -1)

@@ -39,7 +39,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
     fill_buff(buf, serv, &buf_tmp);
 }
 
-void		clt_var(t_client *clt, char **av, t_serv *serv)
+int		clt_var(t_client *clt, char **av, t_serv *serv)
 {
   serv->port = atoi(av[1]);
   serv->pe = getprotobyname("TCP");
@@ -50,7 +50,8 @@ void		clt_var(t_client *clt, char **av, t_serv *serv)
   serv->s_in.sin_addr.s_addr = INADDR_ANY;
   clt->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
   if (clt->fd == -1)
-    exit(1);
+    return (1);
+  return (0);
 }
 
 int		main(int ac, char **av)
@@ -60,15 +61,18 @@ int		main(int ac, char **av)
   //pid_t 	fpid;
   socklen_t 	s_in_size;
 
-  if (ac != 3)
+  if (ac != 2)
   {
     printf("Usage: ./server port\n");
     return (1);
   }
-  clt_var(&clt, av, &serv);
+  if (clt_var(&clt, av, &serv) == 1)
+    return (1);
   s_in_size = sizeof(clt.s_in_client);
-  bind(clt.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in));
-  listen (clt.fd, 42 == -1);
+  if (bind(clt.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in)) == -1)
+    return (1);
+  if (listen (clt.fd, 42 == -1) == -1)
+    return (1);
   while (1)
   {
     clt.fd = accept(clt.fd, (struct sockaddr *)

@@ -25,13 +25,23 @@ char		**fill_tab(char **tab)
   return (tab);
 }
 
-void 		handle_client(t_client *clt, t_serv *serv, t_client *head)
+void		test_list(t_client *head)
+{
+  while (head->next != NULL)
+  {
+    printf("fd : %d\n", head->fd);
+    head = head->next;
+  }
+}
+
+void 		handle_client(t_client *clt, t_serv *serv)
 {
   char 		buf[512];
   char		*buf_tmp;
 
   buf_tmp = NULL;
-  addToChain(head, clt->fd);
+  addToChain(clt, clt->fd);
+  test_list(clt);
   serv->client = clt;
   serv->client->nickname = "";
   serv->tab = ma2d(9, 12);
@@ -60,13 +70,9 @@ int		main(int ac, char **av)
 {
   t_client	clt;
   t_serv	serv;
-  //pid_t 	fpid;
-  t_client	*head;
   socklen_t 	s_in_size;
 
-
-  head = (t_client *)malloc(sizeof(t_client));
-  head->next = NULL;
+  clt.next = NULL;
   if (ac != 2)
   {
     printf("Usage: ./server port\n");
@@ -85,7 +91,7 @@ int		main(int ac, char **av)
     clt.fd = accept(serv.fd, (struct sockaddr *)
      &clt.s_in_client, &s_in_size);
     if (clt.fd > 0)
-      handle_client(&clt, &serv, head);
+      handle_client(&clt, &serv);
   }
   return 0;
   close(clt.fd);

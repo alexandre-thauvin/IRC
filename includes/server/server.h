@@ -54,5 +54,6 @@ void 		f_msg(t_serv *);
 void 		f_send_file(t_serv *);
 void 		f_accept_file(t_serv *);
 void 		addToChain(t_client *, int);
+void		test_list(t_client *);
 
 #endif //IRC_H

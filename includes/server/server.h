@@ -23,7 +23,6 @@ typedef struct 		s_client
   char 			*nickname;
   char 			*read_buffer;
   char 			*write_buffer;
-  struct s_client	*first;
   struct s_client	*next;
 }			t_client;
 
@@ -54,5 +53,6 @@ void 		f_names(t_serv *);
 void 		f_msg(t_serv *);
 void 		f_send_file(t_serv *);
 void 		f_accept_file(t_serv *);
+void 		addToChain(t_client *, int);
 
 #endif //IRC_H

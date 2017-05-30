@@ -25,14 +25,15 @@ char		**fill_tab(char **tab)
   return (tab);
 }
 
-void 		handle_client(t_client *clt, t_serv *serv)
+void 		handle_client(t_client *clt, t_serv *serv, t_client *head)
 {
   char 		buf[512];
   char		*buf_tmp;
 
   buf_tmp = NULL;
-  //addToChain
+  addToChain(head, clt->fd);
   serv->client = clt;
+  serv->client->nickname = "";
   serv->tab = ma2d(9, 12);
   serv->tab = fill_tab(serv->tab);
   dprintf(clt->fd, "220 All rights\r\n");
@@ -60,8 +61,12 @@ int		main(int ac, char **av)
   t_client	clt;
   t_serv	serv;
   //pid_t 	fpid;
+  t_client	*head;
   socklen_t 	s_in_size;
 
+
+  head = (t_client *)malloc(sizeof(t_client));
+  head->next = NULL;
   if (ac != 2)
   {
     printf("Usage: ./server port\n");
@@ -80,7 +85,7 @@ int		main(int ac, char **av)
     clt.fd = accept(serv.fd, (struct sockaddr *)
      &clt.s_in_client, &s_in_size);
     if (clt.fd > 0)
-      handle_client(&clt, &serv);
+      handle_client(&clt, &serv, head);
   }
   return 0;
   close(clt.fd);

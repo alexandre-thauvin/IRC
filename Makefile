@@ -5,7 +5,7 @@
 ## Login   <thauvi_a@epitech.net>
 ##
 ## Started on  Mon Jan 30 10:44:20 2017 Alexandre Thauvin
-## Last update Mon May 29 11:08:57 2017 Alexandre Thauvin
+## Last update Tue May 30 14:42:45 2017 Alexandre Thauvin
 ##
 
 SERVER	= server
@@ -24,7 +24,8 @@ SRC2    = $(DIR2)main.c \
 	$(DIR2)tools.c \
 	$(DIR2)default.c \
 	$(DIR2)cmd.c \
-	$(DIR2)auth.c
+	$(DIR2)auth.c \
+	$(DIR2)client_chain.c
 
 OBJ1	= $(SRC1:.c=.o)
 

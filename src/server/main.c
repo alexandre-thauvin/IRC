@@ -27,6 +27,11 @@ char		**fill_tab(char **tab)
 
 void		test_list(t_client *head)
 {
+  if (head->next == NULL)
+  {
+    printf("fd : %d\n", head->fd);
+    return ;
+  }
   while (head->next != NULL)
   {
     printf("fd : %d\n", head->fd);
@@ -38,10 +43,11 @@ void 		handle_client(t_client *clt, t_serv *serv)
 {
   char 		buf[512];
   char		*buf_tmp;
+  t_client	*toto;
 
   buf_tmp = NULL;
-  addToChain(clt, clt->fd);
-  test_list(clt);
+  toto = addToChain(clt, 0);
+  test_list(toto);
   serv->client = clt;
   serv->client->nickname = "";
   serv->tab = ma2d(9, 12);

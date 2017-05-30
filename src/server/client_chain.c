@@ -4,7 +4,7 @@
 
 #include "server.h"
 
-void 		addToChain(t_client *head, int fd)
+t_client		*addToChain(t_client *head, int fd)
 {
   t_client	*new;
   t_client	*current;
@@ -14,7 +14,9 @@ void 		addToChain(t_client *head, int fd)
   if (new == NULL)
     fprintf(stderr, "Unable to allocate memory for new node\n");
   new->next = NULL;
-  new->fd = fd;
+  (void)fd;
+  new->fd = 10;
+  new->nickname = "toto\n";
   if (head->next == NULL)
     head->next = new;
   else
@@ -23,6 +25,8 @@ void 		addToChain(t_client *head, int fd)
 	current = current->next;
     current->next = new;
   }
+  //printf("fd : %d\nnickname: %s\n", new->fd, new->nickname);
+  return new;
 }
 
 void 		dltFromChain(t_client *head, int fd)

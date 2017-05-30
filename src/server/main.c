@@ -75,9 +75,13 @@ int		clt_var(char **av, t_serv *serv)
 int		main(int ac, char **av)
 {
   t_client	clt;
+  t_client 	*head;
   t_serv	serv;
   socklen_t 	s_in_size;
+  static int 	f_node = 0;
 
+
+  head = (t_client *)malloc(sizeof(t_client));
   clt.next = NULL;
   if (ac != 2)
   {
@@ -96,6 +100,13 @@ int		main(int ac, char **av)
   {
     clt.fd = accept(serv.fd, (struct sockaddr *)
      &clt.s_in_client, &s_in_size);
+    if (f_node == 0)
+    {
+      head = addToChain(&clt, clt.fd);
+      f_node = 1;
+    }
+    else
+      addToChain(head, clt.fd);
     if (clt.fd > 0)
       handle_client(&clt, &serv);
   }

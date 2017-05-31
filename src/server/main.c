@@ -25,36 +25,20 @@ char		**fill_tab(char **tab)
   return (tab);
 }
 
-void		test_list(t_client *head)
-{
-  if (head->next == NULL)
-  {
-    printf("fd : %d\n", head->fd);
-    return ;
-  }
-  while (head->next != NULL)
-  {
-    printf("fd : %d\n", head->fd);
-    head = head->next;
-  }
-}
-
 void 		handle_client(t_client *clt, t_serv *serv)
 {
   char 		buf[512];
-  char		*buf_tmp;
-  t_client	*toto;
 
-  buf_tmp = NULL;
-  toto = addToChain(clt, 0);
-  test_list(toto);
+  printf("BOOM\n");
   serv->client = clt;
   serv->client->nickname = "";
   serv->tab = ma2d(9, 12);
   serv->tab = fill_tab(serv->tab);
   dprintf(clt->fd, "220 All rights\r\n");
-  while (read(clt->fd, buf, 512) > 0)
-    fill_buff(buf, serv, &buf_tmp);
+  if (read(clt->fd, buf, 512) > 0) {
+    write(clt->fd, buf, strlen(buf));
+    write(clt->fd, "\r\n", 2);
+  }
 }
 
 t_client	*clt_var(char **av, t_serv *serv, t_client *client)
@@ -88,6 +72,7 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
   tmp = head;
   if (FD_ISSET(head->fd, readfds))
   {
+    printf("ADD CLIENT\n");
     fd = accept(head->fd, (struct sockaddr *)
      &tmp->s_in_client, &s_in_size);
     addToChain(head, fd);
@@ -96,7 +81,7 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
   while (tmp)
   {
     if (FD_ISSET(tmp->fd, readfds))
-      printf("CLIENT TMP : %d\n", tmp->fd);
+      handle_client(tmp, serv);
     tmp = tmp->next;
   }
 }

@@ -35,7 +35,7 @@ GCC	= gcc
 
 RM	= rm -rf
 
-CFLAGS	=  -Wall -Werror -W -Wextra
+CFLAGS	=  -Wall -W -Wextra
 
 INC1    = -I ./includes/client/
 

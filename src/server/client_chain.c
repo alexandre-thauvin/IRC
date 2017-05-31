@@ -4,6 +4,16 @@
 
 #include "server.h"
 
+void			addToBegin(t_client **head_ref, int fd)
+{
+  t_client	*new;
+
+  new = (t_client *)malloc(sizeof(t_client));
+  new->fd = fd;
+  new->next = *head_ref;
+  *head_ref = new;
+}
+
 t_client		*addToChain(t_client *head, int fd)
 {
   t_client	*new;
@@ -31,6 +41,17 @@ void 		dltFromChain(t_client *head, int fd)
   t_client	*tmp;
 
   tmp = head;
+  if (tmp->fd == fd)
+  {
+    if (tmp->next == NULL)
+    {
+      printf("There is only one node.\n");
+      return;
+    }
+    head->fd = head->next->fd;
+    head->next = head->next->next;
+    return ;
+  }
   while (tmp->next->fd != fd && tmp->next != NULL)
     tmp = tmp->next;
   tmp->next = tmp->next->next;

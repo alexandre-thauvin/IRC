@@ -28,8 +28,6 @@ typedef struct 		s_client
 
 typedef struct 		s_serv
 {
-  int			fd;
-  struct sockaddr_in	s_in;
   int 			port;
   struct protoent	*pe;
   char 			**cmd;
@@ -53,7 +51,7 @@ void 		f_names(t_serv *);
 void 		f_msg(t_serv *);
 void 		f_send_file(t_serv *);
 void 		f_accept_file(t_serv *);
-t_client 		*addToChain(t_client *, int);
+t_client 	*addToChain(t_client *, int);
 void		test_list(t_client *);
-
+int 		max_fd(t_client*);
 #endif //IRC_H

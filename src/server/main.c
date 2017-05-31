@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include "server.h"
-#include <sys/time.h>
 
 char		**fill_tab(char **tab)
 {
@@ -66,7 +65,6 @@ t_client	*clt_var(char **av, t_serv *serv, t_client *client)
   serv->pe = getprotobyname("TCP");
   if (!serv->pe)
     return (NULL);
-
   new = (t_client *)malloc(sizeof (t_client));
   if (new == NULL)
     fprintf(stderr, "Unable to allocate memory for new node\n");
@@ -88,15 +86,17 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
   s_in_size = sizeof(head->s_in_client);
 
   tmp = head;
+  if (FD_ISSET(head->fd, readfds))
+  {
+    fd = accept(head->fd, (struct sockaddr *)
+     &tmp->s_in_client, &s_in_size);
+    addToChain(head, fd);
+  }
+  tmp = tmp->next;
   while (tmp)
   {
-    printf("tmp : %d\n", tmp->fd);
     if (FD_ISSET(tmp->fd, readfds))
-    {
-      fd = accept(head->fd, (struct sockaddr *)
-       &tmp->s_in_client, &s_in_size);
-      addToChain(head, fd);
-    }
+      printf("CLIENT TMP : %d\n", tmp->fd);
     tmp = tmp->next;
   }
 }
@@ -120,9 +120,8 @@ int		main(int ac, char **av)
   t_serv	serv;
   fd_set	readfds;
   struct timeval tv;
+  int 		ret_selec;
 
-  tv.tv_sec = 3;
-  tv.tv_usec = 0;
   head = (t_client*) malloc(sizeof(t_client));
   clt.next = NULL;
   if (ac != 2)
@@ -131,16 +130,18 @@ int		main(int ac, char **av)
     return (1);
   }
   head = clt_var(av, &serv, &clt);
-  if (bind(head->fd, (const struct sockaddr *)&clt.s_in_client, sizeof(clt.s_in_client)) == -1)
+  if (bind(head->fd, (const struct sockaddr *)&head->s_in_client, sizeof(head->s_in_client)) == -1)
     return (1);
   if (listen (head->fd, 42 == -1) == -1)
     return (1);
-  printf("fd server =  %d\n", head->fd);
   while (1)
   {
+    tv.tv_sec = 3;
+    tv.tv_usec = 0;
     FD_ZERO(&readfds);
     set_fd(&readfds, head);
-    if (select(max_fd(head) + 1, &readfds, NULL, NULL, &tv) == -1)
+    ret_selec = select(max_fd(head) + 1, &readfds, NULL, NULL, &tv);
+    if (ret_selec == -1 || ret_selec == 0)
      printf("Error Select\n");
     check_select(head, &readfds, &serv);
     }

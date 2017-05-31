@@ -14,9 +14,7 @@ t_client		*addToChain(t_client *head, int fd)
   if (new == NULL)
     fprintf(stderr, "Unable to allocate memory for new node\n");
   new->next = NULL;
-  (void)fd;
-  new->fd = 10;
-  new->nickname = "toto\n";
+  new->fd = fd;
   if (head->next == NULL)
     head->next = new;
   else
@@ -25,7 +23,6 @@ t_client		*addToChain(t_client *head, int fd)
 	current = current->next;
     current->next = new;
   }
-  //printf("fd : %d\nnickname: %s\n", new->fd, new->nickname);
   return new;
 }
 

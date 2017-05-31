@@ -31,7 +31,6 @@ void	choice(t_serv *cmd)
 
 bool 	check_end(char *line)
 {
-  //todo check \r\n
   int	i;
 
   i = 0;
@@ -42,4 +41,20 @@ bool 	check_end(char *line)
     i++;
   }
   return (false);
+}
+
+int 	max_fd(t_client *client)
+{
+  t_client *tmp;
+  int 	nb;
+
+  nb = 0;
+  tmp = client;
+  while (tmp)
+  {
+    if (tmp->fd > nb)
+      nb = tmp->fd;
+    tmp = tmp->next;
+  }
+  return (nb);
 }

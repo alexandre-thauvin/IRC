@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include "server.h"
+#include <sys/time.h>
 
 char		**fill_tab(char **tab)
 {
@@ -57,19 +58,59 @@ void 		handle_client(t_client *clt, t_serv *serv)
     fill_buff(buf, serv, &buf_tmp);
 }
 
-int		clt_var(char **av, t_serv *serv)
+t_client	*clt_var(char **av, t_serv *serv, t_client *client)
 {
+  t_client	*new;
+
   serv->port = atoi(av[1]);
   serv->pe = getprotobyname("TCP");
   if (!serv->pe)
-    return (1);
-  serv->s_in.sin_family = AF_INET;
-  serv->s_in.sin_port = htons(serv->port);
-  serv->s_in.sin_addr.s_addr = INADDR_ANY;
-  serv->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
-  if (serv->fd == -1)
-    return (1);
-  return (0);
+    return (NULL);
+
+  new = (t_client *)malloc(sizeof (t_client));
+  if (new == NULL)
+    fprintf(stderr, "Unable to allocate memory for new node\n");
+  new->s_in_client.sin_family = AF_INET;
+  new->s_in_client.sin_port = htons(serv->port);
+  new->s_in_client.sin_addr.s_addr = INADDR_ANY;
+  new->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
+  new->next = NULL;
+  if (new->fd == -1)
+    return (NULL);
+  return (new);
+}
+
+void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
+{
+  t_client	*tmp;
+  int 		fd;
+  socklen_t 	s_in_size;
+  s_in_size = sizeof(head->s_in_client);
+
+  tmp = head;
+  while (tmp)
+  {
+    printf("tmp : %d\n", tmp->fd);
+    if (FD_ISSET(tmp->fd, readfds))
+    {
+      fd = accept(head->fd, (struct sockaddr *)
+       &tmp->s_in_client, &s_in_size);
+      addToChain(head, fd);
+    }
+    tmp = tmp->next;
+  }
+}
+
+void		set_fd(fd_set *readfds, t_client *head)
+{
+  t_client *tmp;
+
+  tmp = head;
+  while (tmp)
+  {
+    FD_SET(tmp->fd, readfds);
+    tmp = tmp->next;
+  }
 }
 
 int		main(int ac, char **av)
@@ -77,39 +118,32 @@ int		main(int ac, char **av)
   t_client	clt;
   t_client 	*head;
   t_serv	serv;
-  socklen_t 	s_in_size;
-  static int 	f_node = 0;
+  fd_set	readfds;
+  struct timeval tv;
 
-
-  head = (t_client *)malloc(sizeof(t_client));
+  tv.tv_sec = 3;
+  tv.tv_usec = 0;
+  head = (t_client*) malloc(sizeof(t_client));
   clt.next = NULL;
   if (ac != 2)
   {
     printf("Usage: ./server port\n");
     return (1);
   }
-  if (clt_var(av, &serv) == 1) {
+  head = clt_var(av, &serv, &clt);
+  if (bind(head->fd, (const struct sockaddr *)&clt.s_in_client, sizeof(clt.s_in_client)) == -1)
     return (1);
-  }
-  s_in_size = sizeof(clt.s_in_client);
-  if (bind(serv.fd, (const struct sockaddr *)&serv.s_in, sizeof(serv.s_in)) == -1)
+  if (listen (head->fd, 42 == -1) == -1)
     return (1);
-  if (listen (serv.fd, 42 == -1) == -1)
-    return (1);
+  printf("fd server =  %d\n", head->fd);
   while (1)
   {
-    clt.fd = accept(serv.fd, (struct sockaddr *)
-     &clt.s_in_client, &s_in_size);
-    if (f_node == 0)
-    {
-      head = addToChain(&clt, clt.fd);
-      f_node = 1;
+    FD_ZERO(&readfds);
+    set_fd(&readfds, head);
+    if (select(max_fd(head) + 1, &readfds, NULL, NULL, &tv) == -1)
+     printf("Error Select\n");
+    check_select(head, &readfds, &serv);
     }
-    else
-      addToChain(head, clt.fd);
-    if (clt.fd > 0)
-      handle_client(&clt, &serv);
-  }
   return 0;
   close(clt.fd);
 }

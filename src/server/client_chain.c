@@ -25,17 +25,15 @@ t_client		*addToChain(t_client *head, int fd)
 	current = current->next;
     current->next = new;
   }
-  //printf("fd : %d\nnickname: %s\n", new->fd, new->nickname);
   return new;
 }
 
 void 		dltFromChain(t_client *head, int fd)
 {
-/*  int val;
+  t_client	*tmp;
 
-  t_client *current =
-  while (head->fd != fd)
-    head = head->next;*/
-  (void)fd;
-  (void)head;
+  tmp = head;
+  while (tmp->next->fd != fd && tmp->next != NULL)
+    tmp = tmp->next;
+  tmp->next = tmp->next->next;
 }

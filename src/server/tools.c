@@ -12,6 +12,22 @@
 #include <stdlib.h>
 #include "server.h"
 
+char	*epur_cmd(char *str)
+{
+  char	*tmp;
+  int 	z;
+
+  z = 0;
+  tmp = (char *)malloc(512 * sizeof (char));
+  while (str[z] != '\0' && str[z] != '\n' && str[z] != '\r')
+  {
+    tmp[z] = str[z];
+    z++;
+  }
+  tmp[z] = '\0';
+  return (tmp);
+}
+
 void		default_buff(char *buf, char **buf_tmp)
 {
   if (*buf_tmp == NULL)

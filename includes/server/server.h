@@ -21,9 +21,11 @@ typedef struct 		s_client
   struct sockaddr_in	s_in_client;
   int 			fd;
   char 			*nickname;
-  char 			*read_buffer;
-  char 			*write_buffer;
   struct s_client	*next;
+  char 			*buff_circu;
+  int			front;
+  int			rear;
+  int			n;
 }			t_client;
 
 typedef struct 		s_serv
@@ -54,4 +56,8 @@ void 		f_accept_file(t_serv *);
 t_client 	*addToChain(t_client *, int);
 void		test_list(t_client *);
 int 		max_fd(t_client*);
+char		*cpy(t_serv *, char *);
+void		buff_manage(t_serv *, char *);
+char 		*epur_cmd(char *);
+
 #endif //IRC_H

@@ -27,21 +27,27 @@ char		**fill_tab(char **tab)
 
 void 		handle_client(t_client *clt, t_serv *serv)
 {
-  char 		buf[512];
+  char 		*buf;
 
+  buf = (char *)malloc(512 * sizeof (char));
   printf("BOOM\n");
   serv->client = clt;
   serv->client->nickname = "";
   serv->tab = ma2d(9, 12);
   serv->tab = fill_tab(serv->tab);
+  serv->client->front = 0;
+  serv->client->rear = -1;
+  serv->client->buff_circu = (char *)malloc(1024 * sizeof(char));
   dprintf(clt->fd, "220 All rights\r\n");
   if (read(clt->fd, buf, 512) > 0) {
+    buf = epur_cmd(buf);
+    buff_manage(serv, buf);
     write(clt->fd, buf, strlen(buf));
     write(clt->fd, "\r\n", 2);
   }
 }
 
-t_client	*clt_var(char **av, t_serv *serv, t_client *client)
+t_client	*clt_var(char **av, t_serv *serv)
 {
   t_client	*new;
 
@@ -114,7 +120,7 @@ int		main(int ac, char **av)
     printf("Usage: ./server port\n");
     return (1);
   }
-  head = clt_var(av, &serv, &clt);
+  head = clt_var(av, &serv);
   if (bind(head->fd, (const struct sockaddr *)&head->s_in_client, sizeof(head->s_in_client)) == -1)
     return (1);
   if (listen (head->fd, 42 == -1) == -1)
@@ -126,8 +132,8 @@ int		main(int ac, char **av)
     FD_ZERO(&readfds);
     set_fd(&readfds, head);
     ret_selec = select(max_fd(head) + 1, &readfds, NULL, NULL, &tv);
-    if (ret_selec == -1 || ret_selec == 0)
-     printf("Error Select\n");
+    /*if (ret_selec == -1 || ret_selec == 0)
+     printf("Error Select\n");*/
     check_select(head, &readfds, &serv);
     }
   return 0;

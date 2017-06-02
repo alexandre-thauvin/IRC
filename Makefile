@@ -25,7 +25,8 @@ SRC2    = $(DIR2)main.c \
 	$(DIR2)default.c \
 	$(DIR2)cmd.c \
 	$(DIR2)auth.c \
-	$(DIR2)client_chain.c
+	$(DIR2)client_chain.c \
+	$(DIR2)circualar_queue.c
 
 OBJ1	= $(SRC1:.c=.o)
 

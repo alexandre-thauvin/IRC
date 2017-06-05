@@ -18,7 +18,8 @@ DIR2    = src/server/
 
 #RULE	= 2
 
-SRC1    = $(DIR1)main.c
+SRC1    = $(DIR1)main.c \
+          $(DIR1)fill_buff.c
 
 SRC2    = $(DIR2)main.c \
 	$(DIR2)tools.c \

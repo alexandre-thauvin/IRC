@@ -63,6 +63,8 @@ t_client	*clt_var(char **av, t_serv *serv)
   new->s_in_client.sin_addr.s_addr = INADDR_ANY;
   new->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
   new->next = NULL;
+  new->nickname = (char *)malloc(30 * sizeof(char));
+  new->nickname = "server";
   if (new->fd == -1)
     return (NULL);
   return (new);

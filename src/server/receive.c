@@ -42,7 +42,7 @@ void		fill_cmd(t_client *head, int fd)
   tmp = find_clt(head, fd);
   i = tmp->front;
   z = 0;
-  cmd = (char *)malloc((tmp->rear - tmp->front + 1) * sizeof(char));
+  cmd = (char *)malloc((tmp->rear - tmp->front + 5) * sizeof(char));
   while (i <= tmp->rear)
   {
     cmd[z] = tmp->buff_circu[i];

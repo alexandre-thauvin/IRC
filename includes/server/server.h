@@ -23,41 +23,47 @@ typedef struct 		s_client
   char 			*nickname;
   struct s_client	*next;
   char 			*buff_circu;
-  int			front;
-  int			rear;
-  int			n;
+  unsigned int		front;
+  unsigned int		rear;
+  unsigned int		n;
+  char 			**cmd;
+  unsigned int		channel;
 }			t_client;
 
 typedef struct 		s_serv
 {
+  struct s_client	*head;
   int 			port;
   struct protoent	*pe;
-  char 			**cmd;
   char 			**tab;
   t_client		*client;
 }			t_serv;
 
-void		choice(t_serv *);
+void		choice(t_serv *, int);
 void		default_buff(char *, char **);
 void		fill_buff(char*, t_serv *, char **);
 char 		**ma2d(int, int);
 bool		check_end(char *);
 unsigned int 	nb_word(char *);
 char 		**cmd_to_tab(char*, char **, int);
-void 		f_nick(t_serv *);
-void 		f_list(t_serv *);
-void 		f_join(t_serv *);
-void 		f_part(t_serv *);
-void		f_users(t_serv *);
-void 		f_names(t_serv *);
-void 		f_msg(t_serv *);
-void 		f_send_file(t_serv *);
-void 		f_accept_file(t_serv *);
+void 		f_nick(t_client *);
+void 		f_list(t_client *);
+void 		f_join(t_client *);
+void 		f_part(t_client *);
+void		f_users(t_client *);
+void 		f_names(t_client *);
+void 		f_msg(t_client *);
+void 		f_send_file(t_client *);
+void 		f_accept_file(t_client *);
 t_client 	*addToChain(t_client *, int);
 void		test_list(t_client *);
 int 		max_fd(t_client*);
-char		*cpy(t_serv *, char *);
-void		buff_manage(t_serv *, char *);
+char		*cpy(t_client *, char *);
+void		buff_manage(t_client *, char *);
 char 		*epur_cmd(char *);
+void 		fill_cmd(t_client *, int);
+t_client	*find_clt(t_client *, int);
+void		print_at_all(t_client *, t_serv *);
+
 
 #endif //IRC_H

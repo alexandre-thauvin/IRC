@@ -13,15 +13,16 @@
 
 char		**fill_tab(char **tab)
 {
-  tab[0] = "nick";
-  tab[1] = "list";
-  tab[2] = "join";
-  tab[3] = "part";
-  tab[4] = "names";
-  tab[5] = "msg";
-  tab[6] = "send_file";
-  tab[7] = "accept_file";
-  tab[8] = NULL;
+  tab[0] = "/nick";
+  tab[1] = "/list";
+  tab[2] = "/join";
+  tab[3] = "/part";
+  tab[4] = "/users";
+  tab[5] = "/names";
+  tab[6] = "/msg";
+  tab[7] = "/send_file";
+  tab[8] = "/accept_file";
+  tab[9] = NULL;
   return (tab);
 }
 
@@ -30,20 +31,19 @@ void 		handle_client(t_client *clt, t_serv *serv)
   char 		*buf;
 
   buf = (char *)malloc(512 * sizeof (char));
-  printf("BOOM\n");
   serv->client = clt;
   serv->client->nickname = "";
   serv->tab = ma2d(9, 12);
   serv->tab = fill_tab(serv->tab);
-  serv->client->front = 0;
-  serv->client->rear = -1;
-  serv->client->buff_circu = (char *)malloc(1024 * sizeof(char));
-  dprintf(clt->fd, "220 All rights\r\n");
+  clt->front = 0;
+  clt->rear = -1;
+  clt->buff_circu = (char *)malloc(1024 * sizeof(char));
+  //dprintf(clt->fd, "220 All rights\r\n");
   if (read(clt->fd, buf, 512) > 0) {
     buf = epur_cmd(buf);
-    buff_manage(serv, buf);
-    write(clt->fd, buf, strlen(buf));
-    write(clt->fd, "\r\n", 2);
+    buff_manage(clt, buf);
+    fill_cmd(serv->head, clt->fd);
+    choice(serv, clt->fd);
   }
 }
 
@@ -107,34 +107,33 @@ void		set_fd(fd_set *readfds, t_client *head)
 int		main(int ac, char **av)
 {
   t_client	clt;
-  t_client 	*head;
   t_serv	serv;
   fd_set	readfds;
   struct timeval tv;
   int 		ret_selec;
 
-  head = (t_client*) malloc(sizeof(t_client));
+  serv.head = (t_client*) malloc(sizeof(t_client));
   clt.next = NULL;
   if (ac != 2)
   {
     printf("Usage: ./server port\n");
     return (1);
   }
-  head = clt_var(av, &serv);
-  if (bind(head->fd, (const struct sockaddr *)&head->s_in_client, sizeof(head->s_in_client)) == -1)
+  serv.head = clt_var(av, &serv);
+  if (bind(serv.head->fd, (const struct sockaddr *)&serv.head->s_in_client, sizeof(serv.head->s_in_client)) == -1)
     return (1);
-  if (listen (head->fd, 42 == -1) == -1)
+  if (listen (serv.head->fd, 42 == -1) == -1)
     return (1);
   while (1)
   {
     tv.tv_sec = 3;
     tv.tv_usec = 0;
     FD_ZERO(&readfds);
-    set_fd(&readfds, head);
-    ret_selec = select(max_fd(head) + 1, &readfds, NULL, NULL, &tv);
-    /*if (ret_selec == -1 || ret_selec == 0)
-     printf("Error Select\n");*/
-    check_select(head, &readfds, &serv);
+    set_fd(&readfds, serv.head);
+    ret_selec = select(max_fd(serv.head) + 1, &readfds, NULL, NULL, &tv);
+    if (ret_selec == -1)
+     printf("Error Select\n");
+    check_select(serv.head, &readfds, &serv);
     }
   return 0;
   close(clt.fd);

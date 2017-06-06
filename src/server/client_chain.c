@@ -19,6 +19,7 @@ t_client		*addToChain(t_client *head, int fd)
   t_client	*new;
   t_client	*current;
 
+  printf("PING\n");
   new = (t_client *)malloc(sizeof (t_client));
   current = head;
   if (new == NULL)

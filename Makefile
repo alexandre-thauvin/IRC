@@ -26,8 +26,9 @@ SRC2    = $(DIR2)main.c \
 	$(DIR2)default.c \
 	$(DIR2)cmd.c \
 	$(DIR2)auth.c \
+	$(DIR2)receive.c \
 	$(DIR2)client_chain.c \
-	$(DIR2)circualar_queue.c
+	$(DIR2)circu_buff.c
 
 OBJ1	= $(SRC1:.c=.o)
 
@@ -37,7 +38,7 @@ GCC	= gcc
 
 RM	= rm -rf
 
-CFLAGS	=  -Wall -W -Wextra
+CFLAGS	=  -Wall -W -Wextra -g
 
 INC1    = -I ./includes/client/
 
@@ -64,5 +65,6 @@ clean:
 fclean: clean
 	$(RM) $(CLIENT)
 	$(RM) $(SERVER)
+	$(RM) vgcore*
 
 re: fclean all

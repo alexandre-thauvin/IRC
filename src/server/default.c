@@ -10,23 +10,34 @@
 
 #include "server.h"
 
-void	choice(t_serv *cmd)
+void	choice(t_serv *serv, int fd)
 {
-  void		(*func[9])(t_serv *) = {f_nick, f_list, f_join, f_part,
+  void		(*func[9])(t_client *) = {f_nick, f_list, f_join, f_part,
 				       f_users, f_names, f_msg, f_send_file, f_accept_file};
-  void		(*funci)(t_serv *);
+  void		(*funci)(t_client *);
   int	i;
+  t_client		*tmp;
+  int 			u = 0;
 
   i = 0;
-  while (cmd->tab[i] != NULL && strcmp(cmd->cmd[0], cmd->tab[i]) != 0)
+  tmp = find_clt(serv->head, fd);
+  while (tmp->cmd[u] != NULL)
+  {
+    printf("CMD: |%s|\n", tmp->cmd[u]);
+    u++;
+  }
+  while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
-  if (i >= 8)
+  if (i <= 8)
   {
     funci = func[i];
-    (*funci)(cmd);
+    (*funci)(tmp);
   }
   else
-    dprintf(cmd->client->fd, "500 Unknown command.\r\n");
+  {
+   // dprintf(serv->client->fd, "500 Unknown command.\r\n");
+    print_at_all(tmp, serv);
+  }
 }
 
 bool 	check_end(char *line)

@@ -103,9 +103,9 @@ bool 	check_end(char *line)
   int	i;
 
   i = 0;
-  while (line)
+  while (line[i] != '\0')
   {
-    if (line[i] == '\n')
+    if (line[i] == '\n' || line[i] == '\0')
       return (true);
     i++;
   }

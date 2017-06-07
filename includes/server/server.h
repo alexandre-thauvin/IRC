@@ -3,18 +3,18 @@
 //
 
 #ifndef IRC_H
-#define IRC_H
+# define IRC_H
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <stdbool.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <netinet/in.h>
+# include <netdb.h>
+# include <string.h>
+# include <arpa/inet.h>
+# include <stdbool.h>
 
 typedef struct 		s_client
 {
@@ -46,15 +46,15 @@ char 		**ma2d(int, int);
 bool		check_end(char *);
 unsigned int 	nb_word(char *);
 char 		**cmd_to_tab(char*, char **, int);
-void 		f_nick(t_client *);
-void 		f_list(t_client *);
-void 		f_join(t_client *);
-void 		f_part(t_client *);
-void		f_users(t_client *);
-void 		f_names(t_client *);
-void 		f_msg(t_client *);
-void 		f_send_file(t_client *);
-void 		f_accept_file(t_client *);
+void 		f_nick(t_client *, t_serv *);
+void 		f_list(t_client *, t_serv *);
+void 		f_join(t_client *, t_serv *);
+void 		f_part(t_client *, t_serv *);
+void		f_users(t_client *, t_serv *);
+void 		f_names(t_client *, t_serv *);
+void 		f_msg(t_client *, t_serv *);
+void 		f_send_file(t_client *, t_serv *);
+void 		f_accept_file(t_client *, t_serv *);
 t_client 	*addToChain(t_client *, int);
 void		test_list(t_client *);
 int 		max_fd(t_client*);

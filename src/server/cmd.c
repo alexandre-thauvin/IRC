@@ -9,7 +9,7 @@ void 	f_nick(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1] != NULL)
   {
-    clt->nickname = malloc(30 * sizeof(char));
+    clt->nickname = malloc(strlen(clt->cmd[1] + 1) * sizeof(char));
     clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
   }
   else

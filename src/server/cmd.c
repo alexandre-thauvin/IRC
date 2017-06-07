@@ -9,19 +9,18 @@ void 	f_nick(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1] != NULL)
   {
-    clt->nickname = (char *)malloc(30 * sizeof(char));
+    clt->nickname = malloc(30 * sizeof(char));
     clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
   }
   else
     dprintf(clt->fd, "Bad command\r\n");
-  printf("|%s|\n", clt->nickname);
   serv->head = serv->head;
 }
 
 void 	f_list(t_client *clt, t_serv *serv)
 {
   (void)clt;
-  dprintf(clt->fd, "JE SUIS F_LIST\r\n");
+  dprintf(clt->fd, "clt->%s\r\n", clt->nickname);
   (void)serv;
 }
 void 	f_join(t_client *clt, t_serv *serv)
@@ -44,7 +43,7 @@ void 	f_users(t_client *clt, t_serv *serv)
   printf("fd me :%s\n", clt->nickname);
   while (tmp)
   {
-    dprintf(tmp->fd, "|%s|\n", tmp->nickname);
+    dprintf(clt->fd, "|%s| |%d|\n", tmp->nickname, tmp->fd);
     tmp = tmp->next;
   }
   clt->nickname = clt->nickname;

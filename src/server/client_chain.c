@@ -26,6 +26,8 @@ t_client		*addToChain(t_client *head, int fd)
     fprintf(stderr, "Unable to allocate memory for new node\n");
   new->next = NULL;
   new->fd = fd;
+  new->nickname = (char *)malloc(30 * sizeof(char));
+  new->nickname = "client";
   if (head->next == NULL)
     head->next = new;
   else

@@ -32,7 +32,6 @@ void 		handle_client(t_client *clt, t_serv *serv)
 
   buf = (char *)malloc(512 * sizeof (char));
   serv->client = clt;
-  serv->client->nickname = "";
   serv->tab = ma2d(9, 12);
   serv->tab = fill_tab(serv->tab);
   clt->front = 0;
@@ -44,6 +43,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
     buff_manage(clt, buf);
     fill_cmd(serv->head, clt->fd);
     choice(serv, clt->fd);
+    printf("HANDLE|%s|\n", clt->nickname);
   }
 }
 
@@ -77,6 +77,7 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
   socklen_t 	s_in_size;
   s_in_size = sizeof(head->s_in_client);
 
+
   tmp = head;
   if (FD_ISSET(head->fd, readfds))
   {
@@ -88,8 +89,9 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
   tmp = tmp->next;
   while (tmp)
   {
-    if (FD_ISSET(tmp->fd, readfds))
+    if (FD_ISSET(tmp->fd, readfds)) {
       handle_client(tmp, serv);
+    }
     tmp = tmp->next;
   }
 }

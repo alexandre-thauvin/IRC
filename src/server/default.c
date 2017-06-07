@@ -8,6 +8,7 @@
 ** Last update Sun May 22 15:16:35 2017 Alexandre Thauvin
 */
 
+
 #include "server.h"
 
 void	choice(t_serv *serv, int fd)
@@ -32,7 +33,6 @@ void	choice(t_serv *serv, int fd)
   {
     funci = func[i];
     (*funci)(tmp, serv);
-    printf("|%s|\n", tmp->nickname);
   }
   else
   {

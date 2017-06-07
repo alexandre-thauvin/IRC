@@ -21,6 +21,7 @@ typedef struct 		s_client
   struct sockaddr_in	s_in_client;
   int 			fd;
   char 			*nickname;
+  char 			*test;
   struct s_client	*next;
   char 			*buff_circu;
   unsigned int		front;

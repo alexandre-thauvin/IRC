@@ -5,7 +5,7 @@
 ## Login   <thauvi_a@epitech.net>
 ##
 ## Started on  Mon Jan 30 10:44:20 2017 Alexandre Thauvin
-## Last update Tue May 30 14:42:45 2017 Alexandre Thauvin
+## Last update Tue Jun  6 17:13:05 2017 counil_m
 ##
 
 SERVER	= server
@@ -19,7 +19,10 @@ DIR2    = src/server/
 #RULE	= 2
 
 SRC1    = $(DIR1)main.c \
-          $(DIR1)fill_buff.c
+          $(DIR1)fill_buff.c \
+	  $(DIR1)pars_func.c \
+	  $(DIR1)msg_command.c \
+	  $(DIR1)join_command.c
 
 SRC2    = $(DIR2)main.c \
 	$(DIR2)tools.c \

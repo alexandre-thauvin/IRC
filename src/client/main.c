@@ -3,15 +3,11 @@
 //
 
 #include "client.h"
-#include <sys/socket.h>
 #include <unistd.h>
-#include <stdio.h>
 
 int	main()
 {
   t_client 	*client;
-  socklen_t 	s_in_size;
-  fd_set	readfds;
   char 		*buff;
   char 		*tmp;
 
@@ -24,6 +20,7 @@ int	main()
     {
       buff = epur_buff(buff);
       fill_buff(buff, client, &tmp);
+      check_command(client);
     }
   }
   return (0);

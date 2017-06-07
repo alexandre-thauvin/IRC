@@ -23,10 +23,7 @@ void	choice(t_serv *serv, int fd)
   i = 0;
   tmp = find_clt(serv->head, fd);
   while (tmp->cmd[u] != NULL)
-  {
-    printf("CMD: |%s|\n", tmp->cmd[u]);
     u++;
-  }
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
   if (i <= 8)
@@ -35,10 +32,7 @@ void	choice(t_serv *serv, int fd)
     (*funci)(tmp, serv);
   }
   else
-  {
-   // dprintf(serv->client->fd, "500 Unknown command.\r\n");
     print_at_all(tmp, serv);
-  }
 }
 
 bool 	check_end(char *line)

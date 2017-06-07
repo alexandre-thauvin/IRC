@@ -43,7 +43,6 @@ void 		handle_client(t_client *clt, t_serv *serv)
     buff_manage(clt, buf);
     fill_cmd(serv->head, clt->fd);
     choice(serv, clt->fd);
-    printf("HANDLE|%s|\n", clt->nickname);
   }
 }
 

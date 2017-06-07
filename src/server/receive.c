@@ -12,6 +12,7 @@ char	*epur_cmd(char *str)
   int 	z;
 
   z = 0;
+  printf("trlen : %d\n", strlen(str));
   tmp = (char *)malloc(512 * sizeof (char));
   while (str[z] != '\0' && str[z] != '\n' && str[z] != '\r')
   {

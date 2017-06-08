@@ -44,11 +44,22 @@ void	print_at_all(t_client *clt, t_serv *serv)
 {
   t_client	*tmp;
 
+  if (!clt->chan) {
+    dprintf(clt->fd, "You are in any channel.\r\n");
+    return ;
+  }
   tmp = serv->head->next;
   while (tmp)
   {
     if (tmp->fd != clt->fd)
-      dprintf(tmp->fd, "%s\r\n", clt->cmd[0]);
+    {
+       if (tmp->chan) {
+	 if (strcmp(clt->chan->name, tmp->chan->name) == 0) {
+	   dprintf(tmp->fd, "[%s] %s: ", tmp->chan->name, clt->nickname);
+	   dprintf(tmp->fd, "%s\r\n", clt->cmd[0]);
+	 }
+       }
+    }
     tmp = tmp->next;
   }
 }

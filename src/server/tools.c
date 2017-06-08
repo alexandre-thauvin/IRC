@@ -21,7 +21,7 @@ void	quit_error(t_serv *serv)
 
 void 		close_all(t_serv *serv)
 {
-  (void)serv;
+  f_quit(serv->head, serv);
   return;
 }
 
@@ -118,7 +118,9 @@ char 	**ma2d(int line, int col, t_serv *serv)
 
   i = 0;
   if ((tab = malloc((line + 1) * sizeof(char *))) == NULL)
+  {
     quit_error(serv);
+  }
   while (i < line)
   {
     if ((tab[i] = malloc(col * sizeof(char))) == NULL)

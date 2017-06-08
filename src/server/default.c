@@ -13,7 +13,7 @@
 
 void	choice(t_serv *serv, int fd)
 {
-  void		(*func[10])(t_client *, t_serv *) = {f_nick, f_list, f_join, f_part,
+  void		(*func[11])(t_client *, t_serv *) = {f_nick, f_user, f_list, f_join, f_part,
 				       f_users, f_names, f_msg, f_send_file, f_accept_file, f_quit};
   void		(*funci)(t_client *, t_serv *);
   int		i;
@@ -26,7 +26,7 @@ void	choice(t_serv *serv, int fd)
     u++;
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
-  if (i <= 9)
+  if (i <= 10)
   {
     funci = func[i];
     (*funci)(tmp, serv);
@@ -42,9 +42,13 @@ bool 	check_end(char *line)
   i = 0;
   while (line)
   {
-    if (line[i] == '\n')
-      return (true);
-    i++;
+    if (line[i] == '\r')
+    {
+      i++;
+      if (line[i] == '\n')
+	return (true);
+      i++;
+    }
   }
   return (false);
 }

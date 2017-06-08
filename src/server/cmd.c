@@ -9,7 +9,6 @@ void 	f_nick(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1])
   {
-    printf("%d\n", (int)strlen(clt->cmd[1]));
     if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
       quit_error(serv);
     clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
@@ -23,7 +22,6 @@ void 	f_list(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1] == NULL)
     aff_chan(serv->ch_head, clt->fd);
-  //todo: else: lire la rfc pour savoir si substring...
 }
 void 		f_join(t_client *clt, t_serv *serv)
 {
@@ -71,13 +69,13 @@ void 	f_users(t_client *clt, t_serv *serv)
   tmp = serv->head->next;
   while (tmp)
   {
-    dprintf(clt->fd, "%s\r\n", tmp->nickname);
+    printf("users : %s\n", tmp->nickname);
     tmp = tmp->next;
   }
   clt->nickname = clt->nickname;
 }
 
-void	f_quit(t_client *clt, t_serv *serv)
+void	quit_all(t_client *clt, t_serv *serv)
 {
   t_client *tmp;
 
@@ -89,4 +87,12 @@ void	f_quit(t_client *clt, t_serv *serv)
     tmp = tmp->next;
   }
   close(serv->head->fd);
+  exit(0);
+}
+
+void	f_quit(t_client *clt, t_serv *serv)
+{
+  (void)serv;
+  close (clt->fd);
+  dltFromChain(clt, clt->fd);
 }

@@ -19,8 +19,12 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
   new->fd = fd;
   if ((new->nickname = malloc(512 * sizeof(char))) == NULL)
     quit_error(serv);
+  if ((new->user = malloc(512 * sizeof(char))) == NULL)
+    quit_error(serv);
+  new->user = "user";
   new->nickname = "client";
   new->chan = NULL;
+  dprintf(fd, "001 Welcome\r\n");
   if (head->next == NULL)
     head->next = new;
   else

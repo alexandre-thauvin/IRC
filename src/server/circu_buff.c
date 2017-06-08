@@ -4,15 +4,6 @@
 
 #include "server.h"
 
-void		print_circu(char *str)
-{
-  printf("BUFF_CIRCU: |");
-  for (int i = 0 ; i < 10 ; i++)
-    printf("%c", str[i]);
-  printf("|\n");
-
-}
-
 char		*cpy(t_client *clt, char *src)
 {
   unsigned int 		i = 0;
@@ -35,9 +26,22 @@ char		*cpy(t_client *clt, char *src)
     clt->rear++;
     i++;
   }
-  //clt->buff_circu[clt->rear + 1] = '\0';
-  //clt->rear++;
   return clt->buff_circu;
+}
+
+void		f_user(t_client *clt, t_serv *srv)
+{
+  if (clt->cmd[1])
+  {
+    if ((clt->user = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
+      quit_error(srv);
+    printf("change user : %s\n", clt->cmd[1]);
+    clt->user = strcpy(clt->user, clt->cmd[1]);
+  }
+  else
+    dprintf(clt->fd, "Bad command\r\n");
+  srv->head = srv->head;
+
 }
 
 void		buff_manage(t_client *clt, char *buff_tmp)

@@ -14,19 +14,19 @@
 char		**fill_tab(char **tab)
 {
   tab[0] = "/nick";
-  tab[1] = "/list";
-  tab[2] = "/join";
-  tab[3] = "/part";
-  tab[4] = "/users";
-  tab[5] = "/names";
-  tab[6] = "/msg";
-  tab[7] = "/send_file";
-  tab[8] = "/accept_file";
-  tab[9] = "/quit";
-  tab[10] = NULL;
+  tab[1] = "/user";
+  tab[2] = "/list";
+  tab[3] = "/join";
+  tab[4] = "/part";
+  tab[5] = "/users";
+  tab[6] = "/names";
+  tab[7] = "/msg";
+  tab[8] = "/send_file";
+  tab[9] = "/accept_file";
+  tab[10] = "/quit";
+  tab[11] = NULL;
   return (tab);
 }
-
 void 		handle_client(t_client *clt, t_serv *serv)
 {
   char 		*buf;
@@ -37,13 +37,12 @@ void 		handle_client(t_client *clt, t_serv *serv)
     close_all(serv);
     exit(1);
   }
-  serv->tab = ma2d(10, 12, serv);
+  serv->tab = ma2d(11, 12, serv);
   serv->tab = fill_tab(serv->tab);
   clt->front = 0;
   clt->rear = -1;
   if ((clt->buff_circu = malloc(1024 * sizeof(char))) == NULL)
     quit_error(serv);
-  //dprintf(clt->fd, "220 All rights\r\n");
   if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1) {
     buf = epur_cmd(buf, serv);
     buff_manage(clt, buf);
@@ -125,7 +124,6 @@ int			main(int ac, char **av)
 
   if ((serv.head = malloc(sizeof(t_client))) == NULL)
     quit_error(&serv);
-  // clt.next = NULL;
   if (ac != 2)
   {
     printf("Usage: ./server port\n");
@@ -135,10 +133,7 @@ int			main(int ac, char **av)
   serv.ch_head = set_chan(&chan, &serv);
   printf("ch_head: |%s|\n", serv.ch_head->name);
   if (bind(serv.head->fd, (const struct sockaddr *)&serv.head->s_in_client, sizeof(serv.head->s_in_client)) == -1)
-  {
-    printf("Cannot BIND TROLOL\n");
     return (1);
-  }
   if (listen (serv.head->fd, 42 == -1) == -1)
     return (1);
   while (1)
@@ -152,5 +147,4 @@ int			main(int ac, char **av)
      printf("Error Select\n");
     check_select(serv.head, &readfds, &serv);
     }
-  return 0;
 }

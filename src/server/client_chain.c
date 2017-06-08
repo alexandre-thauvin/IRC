@@ -20,6 +20,7 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
     quit_error(serv);
   new->nickname = "Anonymous-";
   new->chan = NULL;
+  dprintf(fd, "001 Welcome\r\n");
   if (head->next == NULL)
     head->next = new;
   else

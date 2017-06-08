@@ -27,9 +27,9 @@ t_chan		*set_chan(t_chan *head, t_serv *serv)
     quit_error(serv);
   head->next = NULL;
   head->nb_users = 0;
-  if ((head->name = malloc((strlen("Counilous_chan") + 1) * sizeof(char))) == NULL)
+  if ((head->name = malloc((strlen("General Chan") + 1) * sizeof(char))) == NULL)
     quit_error(serv);
-  head->name = strcpy(head->name, "Counilous_chan");
+  head->name = strcpy(head->name, "General Chan");
   return head;
 }
 

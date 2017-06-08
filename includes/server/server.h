@@ -27,8 +27,8 @@ typedef struct 		s_client
 {
   struct sockaddr_in	s_in_client;
   int 			fd;
+  char 			*user;
   char 			*nickname;
-  char 			*test;
   struct s_client	*next;
   char 			*buff_circu;
   unsigned int		front;
@@ -48,8 +48,6 @@ typedef struct 		s_serv
 }			t_serv;
 
 void		choice(t_serv *, int);
-void		default_buff(char *, char **, t_serv *);
-void		fill_buff(char*, t_serv *, char **);
 char 		**ma2d(int, int, t_serv *);
 bool		check_end(char *);
 unsigned int 	nb_word(char *);
@@ -63,9 +61,9 @@ void 		f_names(t_client *, t_serv *);
 void 		f_msg(t_client *, t_serv *);
 void 		f_send_file(t_client *, t_serv *);
 void 		f_accept_file(t_client *, t_serv *);
+void 		f_user(t_client *, t_serv *);
 void 		f_quit(t_client *, t_serv *);
 t_client 	*addToChain(t_client *, int, t_serv *);
-void		test_list(t_client *);
 int 		max_fd(t_client*);
 char		*cpy(t_client *, char *);
 void		buff_manage(t_client *, char *);
@@ -80,5 +78,5 @@ t_chan		*set_chan(t_chan *, t_serv *);
 void		aff_chan(t_chan *, int);
 void 		dlt_chan(t_chan *, char *);
 void		quit_error(t_serv *serv);
-
+void 		dltFromChain(t_client *, int);
 #endif //IRC_H

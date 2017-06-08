@@ -8,8 +8,6 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
 {
   t_client	*new;
   t_client	*current;
-  static char 	*nb = "0";
-
   printf("PING\n");
   if ((new = malloc(sizeof (t_client))) == NULL)
     quit_error(serv);
@@ -21,7 +19,6 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
   if ((new->nickname = malloc(512 * sizeof(char))) == NULL)
     quit_error(serv);
   new->nickname = "Anonymous-";
-  new->nickname = strcat("Anonymous-", nb);
   new->chan = NULL;
   if (head->next == NULL)
     head->next = new;
@@ -31,7 +28,6 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
 	current = current->next;
     current->next = new;
   }
-  nb[0]++;
   return new;
 }
 

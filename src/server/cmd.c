@@ -49,18 +49,23 @@ void 		f_join(t_client *clt, t_serv *serv)
 void 	f_part(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1]) {
-    if (strcmp(clt->cmd[1], clt->chan->name) == 0) {
-      clt->chan->nb_users -= 1;
-      if (clt->chan->nb_users == 0) {
-	dprintf(clt->fd, "Deleted channel: %s\n", clt->chan->name);
-	dprintf(clt->fd, "Please choose a channel.\r\n");
-	dlt_chan(serv->ch_head, clt->cmd[1]);
-      }
-    } else
-      dprintf(clt->fd, "BAD CHAN LOLOLOLOL\r\n");
+    if (clt->chan) {
+      if (strcmp(clt->cmd[1], clt->chan->name) == 0) {
+	clt->chan->nb_users -= 1;
+	if (clt->chan->nb_users == 0) {
+	  dprintf(clt->fd, "Deleted channel: %s\n", clt->chan->name);
+	  dprintf(clt->fd, "Please choose a channel.\r\n");
+	  dlt_chan(serv->ch_head, clt->cmd[1]);
+	}
+      } else
+	dprintf(clt->fd, "BAD CHAN LOLOLOLOL\r\n");
+    }
+    else
+      dprintf(clt->fd, "You are in any chan\r\n");
   }
   else
     dprintf(clt->fd, "Missing argument\r\n");
+
   (void)serv;
 }
 
@@ -71,8 +76,14 @@ void 	f_users(t_client *clt, t_serv *serv)
   tmp = serv->head->next;
   while (tmp)
   {
-    dprintf(clt->fd, "%s\r\n", tmp->nickname);
+    dprintf(clt->fd, "%s", tmp->nickname);
+    if (strcmp(tmp->nickname, "Anonymous-") == 0)
+      dprintf(clt->fd, "%d", tmp->fd);
     tmp = tmp->next;
+    if (tmp)
+      dprintf(clt->fd, "\n");
+    else
+      dprintf(clt->fd, "\r\n");
   }
   clt->nickname = clt->nickname;
 }

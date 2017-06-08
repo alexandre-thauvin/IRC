@@ -13,9 +13,12 @@ void		aff_chan(t_chan *head, int fd)
   tmp = head;
   while (tmp)
   {
-    dprintf(fd, "%s\r\n", tmp->name);
+    dprintf(fd, "%s", tmp->name);
     tmp = tmp->next;
+    if (tmp)
+      dprintf(fd, "\n");
   }
+  dprintf(fd, "\r\n");
 }
 
 t_chan		*set_chan(t_chan *head, t_serv *serv)

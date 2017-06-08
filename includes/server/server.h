@@ -63,7 +63,7 @@ void 		f_names(t_client *, t_serv *);
 void 		f_msg(t_client *, t_serv *);
 void 		f_send_file(t_client *, t_serv *);
 void 		f_accept_file(t_client *, t_serv *);
-void 		t_quit(t_client *, t_serv *);
+void 		f_quit(t_client *, t_serv *);
 t_client 	*addToChain(t_client *, int, t_serv *);
 void		test_list(t_client *);
 int 		max_fd(t_client*);

@@ -4,30 +4,23 @@
 
 #include "server.h"
 
-void			addToBegin(t_client **head_ref, int fd)
-{
-  t_client	*new;
-
-  new = (t_client *)malloc(sizeof(t_client));
-  new->fd = fd;
-  new->next = *head_ref;
-  *head_ref = new;
-}
-
-t_client		*addToChain(t_client *head, int fd)
+t_client		*addToChain(t_client *head, int fd, t_serv *serv)
 {
   t_client	*new;
   t_client	*current;
 
   printf("PING\n");
-  new = (t_client *)malloc(sizeof (t_client));
+  if ((new = malloc(sizeof (t_client))) == NULL)
+    quit_error(serv);
   current = head;
   if (new == NULL)
     fprintf(stderr, "Unable to allocate memory for new node\n");
   new->next = NULL;
   new->fd = fd;
-  new->nickname = (char *)malloc(30 * sizeof(char));
+  if ((new->nickname = malloc(30 * sizeof(char))) == NULL)
+    quit_error(serv);
   new->nickname = "client";
+  new->chan = NULL;
   if (head->next == NULL)
     head->next = new;
   else

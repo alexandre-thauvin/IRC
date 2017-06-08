@@ -31,7 +31,8 @@ SRC2    = $(DIR2)main.c \
 	$(DIR2)auth.c \
 	$(DIR2)receive.c \
 	$(DIR2)client_chain.c \
-	$(DIR2)circu_buff.c
+	$(DIR2)circu_buff.c \
+	$(DIR2)chan.c
 
 OBJ1	= $(SRC1:.c=.o)
 

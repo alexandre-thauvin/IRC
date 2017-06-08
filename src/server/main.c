@@ -30,18 +30,22 @@ void 		handle_client(t_client *clt, t_serv *serv)
 {
   char 		*buf;
 
-  buf = (char *)malloc(512 * sizeof (char));
-  serv->client = clt;
-  serv->tab = ma2d(9, 12);
+  if ((buf = malloc(512 * sizeof (char))) == NULL)
+  {
+    close_all(serv);
+    exit(1);
+  }
+  serv->tab = ma2d(9, 12, serv);
   serv->tab = fill_tab(serv->tab);
   clt->front = 0;
   clt->rear = -1;
-  clt->buff_circu = (char *)malloc(1024 * sizeof(char));
+  if ((clt->buff_circu = malloc(1024 * sizeof(char))) == NULL)
+    quit_error(serv);
   //dprintf(clt->fd, "220 All rights\r\n");
   if (read(clt->fd, buf, 512) > 0) {
-    buf = epur_cmd(buf);
+    buf = epur_cmd(buf, serv);
     buff_manage(clt, buf);
-    fill_cmd(serv->head, clt->fd);
+    fill_cmd(serv->head, clt->fd, serv);
     choice(serv, clt->fd);
   }
 }
@@ -54,7 +58,7 @@ t_client	*clt_var(char **av, t_serv *serv)
   serv->pe = getprotobyname("TCP");
   if (!serv->pe)
     return (NULL);
-  new = (t_client *)malloc(sizeof (t_client));
+  new = malloc(sizeof (t_client));
   if (new == NULL)
     fprintf(stderr, "Unable to allocate memory for new node\n");
   new->s_in_client.sin_family = AF_INET;
@@ -62,7 +66,8 @@ t_client	*clt_var(char **av, t_serv *serv)
   new->s_in_client.sin_addr.s_addr = INADDR_ANY;
   new->fd = socket(AF_INET, SOCK_STREAM, serv->pe->p_proto);
   new->next = NULL;
-  new->nickname = (char *)malloc(30 * sizeof(char));
+  if ((new->nickname = malloc(30 * sizeof(char))) == NULL)
+    quit_error(serv);
   new->nickname = "server";
   if (new->fd == -1)
     return (NULL);
@@ -83,7 +88,8 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
     printf("ADD CLIENT\n");
     fd = accept(head->fd, (struct sockaddr *)
      &tmp->s_in_client, &s_in_size);
-    addToChain(head, fd);
+    aff_chan(serv->ch_head, fd);
+    addToChain(head, fd, serv);
   }
   tmp = tmp->next;
   while (tmp)
@@ -107,24 +113,30 @@ void		set_fd(fd_set *readfds, t_client *head)
   }
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
-  t_client	clt;
-  t_serv	serv;
-  fd_set	readfds;
-  struct timeval tv;
-  int 		ret_selec;
+  t_serv		serv;
+  t_chan		chan;
+  fd_set		readfds;
+  struct timeval 	tv;
+  int 			ret_selec;
 
-  serv.head = (t_client*) malloc(sizeof(t_client));
-  clt.next = NULL;
+  if ((serv.head = malloc(sizeof(t_client))) == NULL)
+    quit_error(&serv);
+  // clt.next = NULL;
   if (ac != 2)
   {
     printf("Usage: ./server port\n");
     return (1);
   }
   serv.head = clt_var(av, &serv);
+  serv.ch_head = set_chan(&chan, &serv);
+  printf("ch_head: |%s|\n", serv.ch_head->name);
   if (bind(serv.head->fd, (const struct sockaddr *)&serv.head->s_in_client, sizeof(serv.head->s_in_client)) == -1)
+  {
+    printf("Cannot BIND TROLOL\n");
     return (1);
+  }
   if (listen (serv.head->fd, 42 == -1) == -1)
     return (1);
   while (1)
@@ -139,5 +151,4 @@ int		main(int ac, char **av)
     check_select(serv.head, &readfds, &serv);
     }
   return 0;
-  close(clt.fd);
 }

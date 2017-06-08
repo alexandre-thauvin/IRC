@@ -12,18 +12,35 @@
 #include <stdlib.h>
 #include "server.h"
 
-void		default_buff(char *buf, char **buf_tmp)
+void	quit_error(t_serv *serv)
+{
+  printf("quit_error\n");
+  close_all(serv);
+  exit(1);
+}
+
+void 		close_all(t_serv *serv)
+{
+  (void)serv;
+  return;
+}
+
+/*void		default_buff(char *buf, char **buf_tmp, t_serv *serv)
 {
   if (*buf_tmp == NULL)
   {
-    *buf_tmp = (char *) malloc((strlen(buf) + 1) * sizeof(char));
+    if ((*buf_tmp = malloc((strlen(buf) + 1) * sizeof(char))) == NULL)
+    {
+      close_all(serv);
+      exit(1);
+    }
     *buf_tmp = strcpy(*buf_tmp, buf);
   }
   else
     *buf_tmp = strcat(*buf_tmp, buf);
 }
 
-/*
+
 void		fill_buff(char *buf, t_serv *serv, char **buf_tmp)
 {
   int		nb_w;
@@ -48,7 +65,7 @@ void		fill_buff(char *buf, t_serv *serv, char **buf_tmp)
     choice(serv);
   }
   else
-    default_buff(buf, buf_tmp);
+    default_buff(buf, buf_tmp, serv);
 }*/
 
 unsigned int 	nb_word(char *line)
@@ -94,16 +111,18 @@ char 	**cmd_to_tab(char *str, char **tab, int nb_word)
   return (tab);
 }
 
-char 	**ma2d(int line, int col)
+char 	**ma2d(int line, int col, t_serv *serv)
 {
   int	i;
   char	**tab;
 
   i = 0;
-  tab = (char **)malloc((line + 1) * sizeof(char *));
+  if ((tab = malloc((line + 1) * sizeof(char *))) == NULL)
+    quit_error(serv);
   while (i < line)
   {
-    tab[i] = (char *)malloc(col * sizeof(char));
+    if ((tab[i] = malloc(col * sizeof(char))) == NULL)
+      quit_error(serv);
     i++;
   }
   tab[i] = NULL;

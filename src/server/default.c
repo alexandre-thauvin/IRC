@@ -21,7 +21,7 @@ void	choice(t_serv *serv, int fd)
   int 			u = 0;
 
   i = 0;
-  tmp = find_clt(serv->head, fd);
+  tmp = find_clt(serv->head, fd, serv);
   while (tmp->cmd[u] != NULL)
     u++;
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)

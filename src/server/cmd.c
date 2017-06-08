@@ -75,21 +75,6 @@ void 	f_users(t_client *clt, t_serv *serv)
   clt->nickname = clt->nickname;
 }
 
-void	quit_all(t_client *clt, t_serv *serv)
-{
-  t_client *tmp;
-
-  (void) clt;
-  tmp = serv->head->next;
-  while (tmp)
-  {
-    close (tmp->fd);
-    tmp = tmp->next;
-  }
-  close(serv->head->fd);
-  exit(0);
-}
-
 void	f_quit(t_client *clt, t_serv *serv)
 {
   (void)serv;

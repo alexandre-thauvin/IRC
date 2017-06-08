@@ -21,52 +21,17 @@ void	quit_error(t_serv *serv)
 
 void 		close_all(t_serv *serv)
 {
-  f_quit(serv->head, serv);
-  return;
-}
+  t_client *tmp;
 
-/*void		default_buff(char *buf, char **buf_tmp, t_serv *serv)
-{
-  if (*buf_tmp == NULL)
+  tmp = serv->head->next;
+  while (tmp)
   {
-    if ((*buf_tmp = malloc((strlen(buf) + 1) * sizeof(char))) == NULL)
-    {
-      close_all(serv);
-      exit(1);
-    }
-    *buf_tmp = strcpy(*buf_tmp, buf);
+    close (tmp->fd);
+    tmp = tmp->next;
   }
-  else
-    *buf_tmp = strcat(*buf_tmp, buf);
+  close(serv->head->fd);
+  exit(0);
 }
-
-
-void		fill_buff(char *buf, t_serv *serv, char **buf_tmp)
-{
-  int		nb_w;
-
-  if (check_end(buf))
-  {
-    if (*buf_tmp == NULL)
-    {
-      nb_w = nb_word(buf);
-      serv->cmd = ma2d(nb_w + 1, 30);
-      serv->cmd = cmd_to_tab(buf, serv->cmd, nb_w);
-    }
-    else
-    {
-      *buf_tmp = strcat(*buf_tmp, buf);
-      nb_w = nb_word(*buf_tmp);
-      serv->cmd = ma2d(nb_w + 1, 30);
-      serv->cmd = cmd_to_tab(*buf_tmp, serv->cmd, nb_w);
-      *buf_tmp = NULL;
-
-    }
-    choice(serv);
-  }
-  else
-    default_buff(buf, buf_tmp, serv);
-}*/
 
 unsigned int 	nb_word(char *line)
 {

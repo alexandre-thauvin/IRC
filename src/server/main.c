@@ -22,7 +22,8 @@ char		**fill_tab(char **tab)
   tab[6] = "/msg";
   tab[7] = "/send_file";
   tab[8] = "/accept_file";
-  tab[9] = NULL;
+  tab[9] = "/quit";
+  tab[10] = NULL;
   return (tab);
 }
 
@@ -35,7 +36,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
     close_all(serv);
     exit(1);
   }
-  serv->tab = ma2d(9, 12, serv);
+  serv->tab = ma2d(10, 12, serv);
   serv->tab = fill_tab(serv->tab);
   clt->front = 0;
   clt->rear = -1;

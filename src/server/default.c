@@ -13,12 +13,12 @@
 
 void	choice(t_serv *serv, int fd)
 {
-  void		(*func[9])(t_client *, t_serv *) = {f_nick, f_list, f_join, f_part,
-				       f_users, f_names, f_msg, f_send_file, f_accept_file};
+  void		(*func[10])(t_client *, t_serv *) = {f_nick, f_list, f_join, f_part,
+				       f_users, f_names, f_msg, f_send_file, f_accept_file, f_quit};
   void		(*funci)(t_client *, t_serv *);
-  int	i;
-  t_client		*tmp;
-  int 			u = 0;
+  int		i;
+  t_client	*tmp;
+  int 		u = 0;
 
   i = 0;
   tmp = find_clt(serv->head, fd, serv);
@@ -26,7 +26,7 @@ void	choice(t_serv *serv, int fd)
     u++;
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
-  if (i <= 8)
+  if (i <= 9)
   {
     funci = func[i];
     (*funci)(tmp, serv);

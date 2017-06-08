@@ -12,7 +12,6 @@ char	*epur_cmd(char *str, t_serv *serv)
   int 	z;
 
   z = 0;
-  //printf("strlen : %d\n", strlen(str));
   if ((tmp = malloc(512 * sizeof (char))) == NULL)
     quit_error(serv);
   while (str[z] != '\0' && str[z] != '\n' && str[z] != '\r')

@@ -30,8 +30,9 @@ char		**fill_tab(char **tab)
 void 		handle_client(t_client *clt, t_serv *serv)
 {
   char 		*buf;
+  int 		ret = 0;
 
-  if ((buf = malloc(512 * sizeof (char))) == NULL)
+  if ((buf = malloc(514 * sizeof (char))) == NULL)
   {
     close_all(serv);
     exit(1);
@@ -43,7 +44,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
   if ((clt->buff_circu = malloc(1024 * sizeof(char))) == NULL)
     quit_error(serv);
   //dprintf(clt->fd, "220 All rights\r\n");
-  if (read(clt->fd, buf, 512) > 0) {
+  if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1) {
     buf = epur_cmd(buf, serv);
     buff_manage(clt, buf);
     fill_cmd(serv->head, clt->fd, serv);

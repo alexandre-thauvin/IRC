@@ -16,6 +16,11 @@ char	*epur_cmd(char *str, t_serv *serv)
     quit_error(serv);
   while (str[z] != '\0' && str[z] != '\n' && str[z] != '\r')
   {
+    if (z >= 511)
+    {
+      printf("OVERFLOW\n");
+      return NULL;
+    }
     tmp[z] = str[z];
     z++;
   }
@@ -48,6 +53,11 @@ void		fill_cmd(t_client *head, int fd, t_serv *serv)
     quit_error(serv);
 while (i <= tmp->rear)
   {
+    if (z >= 510)
+    {
+      printf("OVERFLOW\n");
+      return;
+    }
     cmd[z] = tmp->buff_circu[i];
     z++;
     i++;

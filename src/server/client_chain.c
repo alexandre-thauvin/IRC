@@ -17,7 +17,7 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
     fprintf(stderr, "Unable to allocate memory for new node\n");
   new->next = NULL;
   new->fd = fd;
-  if ((new->nickname = malloc(30 * sizeof(char))) == NULL)
+  if ((new->nickname = malloc(512 * sizeof(char))) == NULL)
     quit_error(serv);
   new->nickname = "client";
   new->chan = NULL;

@@ -88,7 +88,6 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
     printf("ADD CLIENT\n");
     fd = accept(head->fd, (struct sockaddr *)
      &tmp->s_in_client, &s_in_size);
-    aff_chan(serv->ch_head, fd);
     addToChain(head, fd, serv);
   }
   tmp = tmp->next;

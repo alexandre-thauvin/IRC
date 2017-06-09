@@ -24,6 +24,7 @@ void 		close_all(t_serv *serv)
   t_client *tmp;
 
   tmp = serv->head->next;
+  printf("close_all\n");
   while (tmp)
   {
     close (tmp->fd);

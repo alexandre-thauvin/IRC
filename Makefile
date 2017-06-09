@@ -67,7 +67,6 @@ clean:
 	$(RM) *#
 
 fclean: clean
-	$(RM) $(CLIENT)
 	$(RM) $(SERVER)
 	$(RM) vgcore*
 

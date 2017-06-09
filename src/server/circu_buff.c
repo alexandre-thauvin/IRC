@@ -8,21 +8,15 @@ char		*cpy(t_client *clt, char *src)
 {
   unsigned int 		i = 0;
 
-  if ((clt->rear + 1) % clt->n != 0)
-    clt->front = clt->rear + 1;
-  else if (clt->rear + 1 == clt->n || ((clt->rear + 1) % clt->n == 0))
-    clt->front = 0;
-  while (src[i] != '\0' && src[i] != '\n' && src[i] != '\r')
+  if (clt->rear != 0) {
+    if (check_end(clt)) {
+      memset(clt->buff_circu, '\0', 512);
+      clt->rear = 0;
+    }
+  }
+  while (src[i] != '\0')
   {
-    if (i >= 511)
-    {
-      printf("%d\nOVERFLOW\n", i);
-      return NULL;
-    }
-    if (((clt->rear) + 1) % clt->n == 0 && clt->rear != 0) {
-      clt->rear = -1;
-    }
-      clt->buff_circu[clt->rear + 1] = src[i];
+    clt->buff_circu[clt->rear] = src[i];
     clt->rear++;
     i++;
   }
@@ -44,8 +38,12 @@ void		f_user(t_client *clt, t_serv *srv)
 
 }
 
-void		buff_manage(t_client *clt, char *buff_tmp)
+bool		buff_manage(t_client *clt, char *buff_tmp)
 {
-  clt->n = 513;
+  clt->n = 512;
   clt->buff_circu = cpy(clt, buff_tmp);
+  if (check_end(clt))
+    return true;
+  else
+    return false;
 }

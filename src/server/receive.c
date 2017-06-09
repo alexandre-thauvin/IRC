@@ -6,28 +6,6 @@
 #include <stdlib.h>
 #include "server.h"
 
-char	*epur_cmd(char *str, t_serv *serv)
-{
-  char	*tmp;
-  int 	z;
-
-  z = 0;
-  if ((tmp = malloc(512 * sizeof (char))) == NULL)
-    quit_error(serv);
-  while (str[z] != '\0' && str[z] != '\n' && str[z] != '\r')
-  {
-    if (z >= 511)
-    {
-      printf("OVERFLOW\n");
-      return NULL;
-    }
-    tmp[z] = str[z];
-    z++;
-  }
-  tmp[z] = '\0';
-  return (tmp);
-}
-
 t_client	*find_clt(t_client *head, int fd, t_serv *serv)
 {
   t_client	*tmp;
@@ -49,21 +27,20 @@ void		fill_cmd(t_client *head, int fd, t_serv *serv)
   tmp = find_clt(head, fd, serv);
   i = tmp->front;
   z = 0;
-  if ((cmd = (char *)malloc((tmp->rear - tmp->front + 5) * sizeof(char))) == NULL)
+  if ((cmd = malloc((tmp->rear - tmp->front + 5) * sizeof(char))) == NULL)
     quit_error(serv);
+
+//  printf("|%s| // %d\n", tmp->buff_circu, tmp->rear - tmp->front);
 while (i <= tmp->rear)
   {
-    if (z >= 510)
-    {
-      printf("OVERFLOW\n");
-      return;
-    }
     cmd[z] = tmp->buff_circu[i];
     z++;
     i++;
   }
   cmd[z] = '\0';
+  printf("[receive] cmd:|%s|\n", cmd);
   tmp->cmd = ma2d(nb_word(cmd) + 1, 512, serv);
   tmp->cmd = cmd_to_tab(cmd, tmp->cmd, nb_word(cmd));
+  printf("cmd:|%s|\n", tmp->cmd[0]);
 }
 

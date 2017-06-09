@@ -35,20 +35,20 @@ void	choice(t_serv *serv, int fd)
     print_at_all(tmp, serv);
 }
 
-bool 	check_end(char *line)
+bool 	check_end(t_client *clt)
 {
-  int	i;
+  unsigned int	i;
 
   i = 0;
-  while (line)
+  while (clt->buff_circu && i < clt->rear)
   {
-    if (line[i] == '\r')
+    if (clt->buff_circu[i] == '\r')
     {
-      i++;
-      if (line[i] == '\n')
+      if (clt->buff_circu[i + 1] == '\n') {
 	return (true);
-      i++;
+      }
     }
+    i++;
   }
   return (false);
 }

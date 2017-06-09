@@ -14,11 +14,13 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
   current = head;
   if (new == NULL)
     fprintf(stderr, "Unable to allocate memory for new node\n");
+  if ((new->buff_circu = malloc(512 * sizeof(char))) == NULL)
+    quit_error(serv);
+  memset(new->buff_circu, '\0', 512);
+  new->front = 0;
+  new->rear = 0;
   new->next = NULL;
   new->fd = fd;
-  if ((new->nickname = malloc(512 * sizeof(char))) == NULL)
-    quit_error(serv);
-  new->nickname = "Anonymous-";
   new->chan = NULL;
   dprintf(fd, "001 Welcome\r\n");
   if (head->next == NULL)

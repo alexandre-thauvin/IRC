@@ -13,17 +13,17 @@
 
 char		**fill_tab(char **tab)
 {
-  tab[0] = "/nick";
-  tab[1] = "/user";
-  tab[2] = "/list";
-  tab[3] = "/join";
-  tab[4] = "/part";
-  tab[5] = "/users";
-  tab[6] = "/names";
-  tab[7] = "/msg";
-  tab[8] = "/send_file";
-  tab[9] = "/accept_file";
-  tab[10] = "/quit";
+  tab[0] = "NICK";
+  tab[1] = "USER";
+  tab[2] = "LIST";
+  tab[3] = "JOIN";
+  tab[4] = "PART";
+  tab[5] = "USERS";
+  tab[6] = "NAMES";
+  tab[7] = "PRIVMSG";
+  tab[8] = "SEND_FILE";
+  tab[9] = "ACCEPT_FILE";
+  tab[10] = "QUIT";
   tab[11] = NULL;
   return (tab);
 }
@@ -32,22 +32,21 @@ void 		handle_client(t_client *clt, t_serv *serv)
   char 		*buf;
   int 		ret = 0;
 
-  if ((buf = malloc(514 * sizeof (char))) == NULL)
+
+  if ((buf = malloc(512 * sizeof (char))) == NULL)
   {
     close_all(serv);
     exit(1);
   }
+  memset(buf, '\0', 512);
   serv->tab = ma2d(11, 12, serv);
   serv->tab = fill_tab(serv->tab);
-  clt->front = 0;
-  clt->rear = -1;
-  if ((clt->buff_circu = malloc(1024 * sizeof(char))) == NULL)
-    quit_error(serv);
   if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1) {
-    buf = epur_cmd(buf, serv);
-    buff_manage(clt, buf);
-    fill_cmd(serv->head, clt->fd, serv);
-    choice(serv, clt->fd);
+    if (buff_manage(clt, buf))
+    {
+      fill_cmd(serv->head, clt->fd, serv);
+      choice(serv, clt->fd);
+    }
   }
 }
 

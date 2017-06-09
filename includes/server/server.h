@@ -49,7 +49,7 @@ typedef struct 		s_serv
 
 void		choice(t_serv *, int);
 char 		**ma2d(int, int, t_serv *);
-bool		check_end(char *);
+bool		check_end(t_client *);
 unsigned int 	nb_word(char *);
 char 		**cmd_to_tab(char*, char **, int);
 void 		f_nick(t_client *, t_serv *);
@@ -66,7 +66,7 @@ void 		f_quit(t_client *, t_serv *);
 t_client 	*addToChain(t_client *, int, t_serv *);
 int 		max_fd(t_client*);
 char		*cpy(t_client *, char *);
-void		buff_manage(t_client *, char *);
+bool		buff_manage(t_client *, char *);
 char 		*epur_cmd(char *, t_serv *);
 void 		fill_cmd(t_client *, int, t_serv *);
 t_client	*find_clt(t_client *, int, t_serv *);
@@ -79,4 +79,5 @@ void		aff_chan(t_chan *, int);
 void 		dlt_chan(t_chan *, char *);
 void		quit_error(t_serv *serv);
 void 		dltFromChain(t_client *, int);
+
 #endif //IRC_H

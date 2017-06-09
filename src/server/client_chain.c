@@ -8,7 +8,7 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
 {
   t_client	*new;
   t_client	*current;
-  printf("PING\n");
+
   if ((new = malloc(sizeof (t_client))) == NULL)
     quit_error(serv);
   current = head;

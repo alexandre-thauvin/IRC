@@ -14,7 +14,6 @@
 
 void	quit_error(t_serv *serv)
 {
-  printf("quit_error\n");
   close_all(serv);
   exit(1);
 }
@@ -24,7 +23,6 @@ void 		close_all(t_serv *serv)
   t_client *tmp;
 
   tmp = serv->head->next;
-  printf("close_all\n");
   while (tmp)
   {
     close (tmp->fd);

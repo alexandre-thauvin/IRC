@@ -1,6 +1,12 @@
-//
-// Created by thauvi_a on 5/29/17.
-//
+/*
+** cmd.c for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src/server
+**
+** Made by Alexandre Thauvin
+** Login   <thauvi_a@epitech.net>
+**
+** Started on  Fri Jun  9 22:08:42 2017 Alexandre Thauvin
+** Last update Fri Jun  9 22:08:44 2017 Alexandre Thauvin
+*/
 
 #include "server.h"
 
@@ -12,7 +18,7 @@ void 	f_nick(t_client *clt, t_serv *serv)
     if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
       quit_error(serv);
     clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
-    dprintf(clt->fd, ":%s NICK%s\r\n", clt->nickname, clt->cmd[1]);
+    dprintf(clt->fd, ":%s NICK %s\r\n", clt->nickname, clt->cmd[1]);
   }
   else
     dprintf(clt->fd, "Bad command\r\n");
@@ -21,8 +27,10 @@ void 	f_nick(t_client *clt, t_serv *serv)
 
 void 	f_list(t_client *clt, t_serv *serv)
 {
-  if (clt->cmd[1] == NULL)
-    aff_chan(serv->ch_head, clt->fd);
+  if (serv->ch_head) {
+    if (clt->cmd[1] == NULL)
+      aff_chan(serv->ch_head, clt->fd);
+  }
 }
 void 		f_join(t_client *clt, t_serv *serv)
 {
@@ -32,16 +40,23 @@ void 		f_join(t_client *clt, t_serv *serv)
   {
     if (clt->cmd[1][0] == '#')
     {
-      tmp = find_chan(serv->ch_head, clt->cmd[1]);
-      if (tmp == NULL)
-      {
-	clt->chan = add_chan(serv->ch_head, clt->cmd[1], serv);
-	clt->chan->nb_users += 1;
-      } else {
-	clt->chan = tmp;
-	tmp->nb_users += 1;
+      if (serv->ch_head) {
+	tmp = find_chan(serv->ch_head, clt->cmd[1]);
+	if (tmp == NULL) {
+	  clt->chan = add_chan(clt->cmd[1], serv);
+	  clt->chan->nb_users += 1;
+	} else {
+	  clt->chan = tmp;
+	  tmp->nb_users += 1;
+	}
+	dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->cmd[1]);
       }
-      dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->cmd[1]);
+      else
+      {
+	clt->chan = add_chan(clt->cmd[1], serv);
+	printf(":%s JOIN : %s\r\n", clt->nickname, serv->ch_head->name);
+	dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, serv->ch_head->name);
+      }
     }
     else
       dprintf(clt->fd, "403 %s %s :Invalid channel name\r\n", clt->nickname, clt->cmd[1]);
@@ -53,15 +68,16 @@ void 		f_join(t_client *clt, t_serv *serv)
 void 	f_part(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1]) {
-    if (clt->chan) {
+    if (serv->ch_head && clt->chan) {
       if (strcmp(clt->cmd[1], clt->chan->name) == 0) {
 	clt->chan->nb_users -= 1;
 	if (clt->chan->nb_users == 0) {
 	  dprintf(clt->fd, "Deleted channel: %s\n", clt->chan->name);
 	  dprintf(clt->fd, "Please choose a channel.\r\n");
-	  dlt_chan(serv->ch_head, clt->cmd[1]);
+	  dlt_chan(serv->ch_head, clt->cmd[1], serv);
 	}
-      } else
+      }
+      else
 	dprintf(clt->fd, "BAD CHAN LOLOLOLOL\r\n");
     }
     else

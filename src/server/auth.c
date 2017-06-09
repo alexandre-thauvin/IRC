@@ -1,7 +1,12 @@
-//
-// Created by thauvi_a on 5/29/17.
-//
-
+/*
+** auth.c for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src/server
+**
+** Made by Alexandre Thauvin
+** Login   <thauvi_a@epitech.net>
+**
+** Started on  Fri Jun  9 22:08:02 2017 Alexandre Thauvin
+** Last update Fri Jun  9 22:08:03 2017 Alexandre Thauvin
+*/
 
 #include "server.h"
 
@@ -19,6 +24,10 @@ void 	f_names(t_client *clt, t_serv *serv)
 	dprintf(clt->fd, "%d\r\n", tmp->fd);
     }
     tmp = tmp->next;
+    if (tmp)
+      dprintf(clt->fd, "\n");
+    else
+      dprintf(clt->fd, "\r\n");
   }
   //todo: segfault lors de 2 clients pas dans le même channel
 }

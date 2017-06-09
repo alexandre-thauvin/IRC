@@ -1,6 +1,12 @@
-//
-// Created by thauvi_a on 5/29/17.
-//
+/*
+** circu_buff.c for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src/server
+**
+** Made by Alexandre Thauvin
+** Login   <thauvi_a@epitech.net>
+**
+** Started on  Fri Jun  9 22:08:19 2017 Alexandre Thauvin
+** Last update Fri Jun  9 22:08:21 2017 Alexandre Thauvin
+*/
 
 #include "server.h"
 

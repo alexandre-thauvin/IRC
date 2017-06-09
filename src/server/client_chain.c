@@ -1,6 +1,12 @@
-//
-// Created by thauvi_a on 5/29/17.
-//
+/*
+** client_chain.c for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src/server
+**
+** Made by Alexandre Thauvin
+** Login   <thauvi_a@epitech.net>
+**
+** Started on  Fri Jun  9 22:08:30 2017 Alexandre Thauvin
+** Last update Fri Jun  9 22:08:31 2017 Alexandre Thauvin
+*/
 
 #include "server.h"
 
@@ -17,6 +23,9 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
   if ((new->buff_circu = malloc(512 * sizeof(char))) == NULL)
     quit_error(serv);
   memset(new->buff_circu, '\0', 512);
+  if ((new->nickname = malloc(512 * sizeof(char))) == NULL)
+    quit_error(serv);
+  new->nickname = "Anonymous-";
   new->front = 0;
   new->rear = 0;
   new->next = NULL;

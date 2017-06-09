@@ -1,13 +1,12 @@
 /*
-** default.c for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src
+** default.c for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src/server
 **
 ** Made by Alexandre Thauvin
 ** Login   <thauvi_a@epitech.net>
 **
-** Started on  Sun May 22 15:16:32 2017 Alexandre Thauvin
-** Last update Sun May 22 15:16:35 2017 Alexandre Thauvin
+** Started on  Fri Jun  9 22:08:55 2017 Alexandre Thauvin
+** Last update Fri Jun  9 22:08:57 2017 Alexandre Thauvin
 */
-
 
 #include "server.h"
 

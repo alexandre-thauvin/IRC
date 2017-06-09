@@ -1,6 +1,12 @@
-//
-// Created by thauvi_a on 5/22/17.
-//
+/*
+** server.h for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src/server
+**
+** Made by Alexandre Thauvin
+** Login   <thauvi_a@epitech.net>
+**
+** Started on  Fri Jun  9 22:10:14 2017 Alexandre Thauvin
+** Last update Fri Jun  9 22:10:15 2017 Alexandre Thauvin
+*/
 
 #ifndef IRC_H
 # define IRC_H
@@ -71,11 +77,12 @@ void 		fill_cmd(t_client *, int, t_serv *);
 t_client	*find_clt(t_client *, int, t_serv *);
 void		print_at_all(t_client *, t_serv *);
 void 		close_all(t_serv *);
-t_chan		*add_chan(t_chan *, char *, t_serv *);
+t_chan		*add_chan(char *, t_serv *);
 t_chan		*find_chan(t_chan *, char *);
 void		aff_chan(t_chan *, int);
-void 		dlt_chan(t_chan *, char *);
+void 		dlt_chan(t_chan *, char *, t_serv *s);
 void		quit_error(t_serv *serv);
 void 		dltFromChain(t_client *, int);
+t_chan		*set_chan(t_serv *);
 
 #endif //IRC_H

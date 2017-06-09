@@ -126,6 +126,7 @@ int			main(int ac, char **av)
     return (1);
   }
   serv.head = clt_var(av, &serv);
+  serv.ch_head = NULL;
   if (bind(serv.head->fd, (const struct sockaddr *)&serv.head->s_in_client, sizeof(serv.head->s_in_client)) == -1)
     return (1);
   if (listen (serv.head->fd, 42 == -1) == -1)

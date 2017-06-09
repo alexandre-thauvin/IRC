@@ -1,6 +1,12 @@
-//
-// Created by thauvi_a on 6/5/17.
-//
+/*
+** receive.c for  in /home/thauvi_a/rendu/psu/PSU_2016_myirc/src/server
+**
+** Made by Alexandre Thauvin
+** Login   <thauvi_a@epitech.net>
+**
+** Started on  Fri Jun  9 22:09:25 2017 Alexandre Thauvin
+** Last update Fri Jun  9 22:09:26 2017 Alexandre Thauvin
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,4 +47,3 @@ while (i <= tmp->rear)
   tmp->cmd = ma2d(nb_word(cmd) + 1, 512, serv);
   tmp->cmd = cmd_to_tab(cmd, tmp->cmd, nb_word(cmd));
 }
-

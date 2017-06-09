@@ -7,7 +7,6 @@
 
 void 	f_nick(t_client *clt, t_serv *serv)
 {
-  printf("[F_NICK] |%s| // |%s|\n", clt->cmd[0], clt->cmd[1]);
   if (clt->cmd[1])
   {
     if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
@@ -34,7 +33,8 @@ void 		f_join(t_client *clt, t_serv *serv)
     if (clt->cmd[1][0] == '#')
     {
       tmp = find_chan(serv->ch_head, clt->cmd[1]);
-      if (tmp == NULL) {
+      if (tmp == NULL)
+      {
 	clt->chan = add_chan(serv->ch_head, clt->cmd[1], serv);
 	clt->chan->nb_users += 1;
       } else {

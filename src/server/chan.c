@@ -4,8 +4,6 @@
 
 #include "server.h"
 
-
-
 void		aff_chan(t_chan *head, int fd)
 {
   t_chan	*tmp;
@@ -21,18 +19,6 @@ void		aff_chan(t_chan *head, int fd)
   dprintf(fd, "\r\n");
 }
 
-t_chan		*set_chan(t_chan *head, t_serv *serv)
-{
-  if ((head = malloc(sizeof(t_chan))) == NULL)
-    quit_error(serv);
-  head->next = NULL;
-  head->nb_users = 0;
-  if ((head->name = malloc((strlen("General Chan") + 1) * sizeof(char))) == NULL)
-    quit_error(serv);
-  head->name = strcpy(head->name, "General Chan");
-  return head;
-}
-
 t_chan		*find_chan(t_chan *head, char *name)
 {
   t_chan	*tmp;
@@ -40,7 +26,7 @@ t_chan		*find_chan(t_chan *head, char *name)
   tmp = head;
   while (tmp &&  strcmp(name, tmp->name) != 0)
     tmp = tmp->next;
-  return tmp;
+  return (tmp);
 }
 
 t_chan		*add_chan(t_chan *head, char *name, t_serv *serv)
@@ -48,7 +34,6 @@ t_chan		*add_chan(t_chan *head, char *name, t_serv *serv)
   t_chan	*new;
   t_chan	*current;
 
-  printf("PING\n");
   if ((new = malloc(sizeof (t_chan))) == NULL)
   {
     close_all(serv);
@@ -70,7 +55,7 @@ t_chan		*add_chan(t_chan *head, char *name, t_serv *serv)
       current = current->next;
     current->next = new;
   }
-  return new;
+  return (new);
 }
 
 void 		dlt_chan(t_chan *head, char *name)

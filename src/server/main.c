@@ -85,7 +85,6 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
   tmp = head;
   if (FD_ISSET(head->fd, readfds))
   {
-    printf("ADD CLIENT\n");
     fd = accept(head->fd, (struct sockaddr *)
      &tmp->s_in_client, &s_in_size);
     addToChain(head, fd, serv);
@@ -115,7 +114,6 @@ void		set_fd(fd_set *readfds, t_client *head)
 int			main(int ac, char **av)
 {
   t_serv		serv;
-  t_chan		chan;
   fd_set		readfds;
   struct timeval 	tv;
   int 			ret_selec;
@@ -128,8 +126,6 @@ int			main(int ac, char **av)
     return (1);
   }
   serv.head = clt_var(av, &serv);
-  serv.ch_head = set_chan(&chan, &serv);
-  printf("ch_head: |%s|\n", serv.ch_head->name);
   if (bind(serv.head->fd, (const struct sockaddr *)&serv.head->s_in_client, sizeof(serv.head->s_in_client)) == -1)
     return (1);
   if (listen (serv.head->fd, 42 == -1) == -1)

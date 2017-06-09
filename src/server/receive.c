@@ -38,9 +38,7 @@ while (i <= tmp->rear)
     i++;
   }
   cmd[z] = '\0';
-  printf("[receive] cmd:|%s|\n", cmd);
   tmp->cmd = ma2d(nb_word(cmd) + 1, 512, serv);
   tmp->cmd = cmd_to_tab(cmd, tmp->cmd, nb_word(cmd));
-  printf("cmd:|%s|\n", tmp->cmd[0]);
 }
 

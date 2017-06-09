@@ -25,8 +25,20 @@ void 	f_names(t_client *clt, t_serv *serv)
 
 void 	f_msg(t_client *clt, t_serv *serv)
 {
-  (void)clt;
-  (void)serv;
+  int i;
+  t_client *tmp;
+
+  tmp = serv->head->next;
+  i = 2;
+  while (strcmp(tmp->nickname, clt->cmd[1]) != 0)
+    tmp = tmp->next;
+  dprintf(tmp->fd, "msg de %s : ", clt->nickname);
+  while (clt->cmd[i])
+  {
+    dprintf(tmp->fd, "%s", clt->cmd[i]);
+    i++;
+  }
+  dprintf(tmp->fd, "\r\n");
 }
 
 void 	f_send_file(t_client *clt, t_serv *serv)

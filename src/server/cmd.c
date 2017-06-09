@@ -9,6 +9,7 @@ void 	f_nick(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1])
   {
+    dprintf(clt->fd, ":%s NICK %s\r\n", clt->nickname, clt->cmd[1]);
     if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
       quit_error(serv);
     clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
@@ -27,21 +28,25 @@ void 		f_join(t_client *clt, t_serv *serv)
 {
   t_chan	*tmp;
 
-  if (clt->cmd[1]) {
-    tmp = find_chan(serv->ch_head, clt->cmd[1]);
-    if (tmp == NULL) {
-      clt->chan = add_chan(serv->ch_head, clt->cmd[1], serv);
-      dprintf(clt->fd, "Channel created:  %s\r\n", clt->cmd[1]);
-      dprintf(clt->fd, "You joined the channel: %s\r\n", clt->cmd[1]);
-      clt->chan->nb_users += 1;
-    } else {
-      clt->chan = tmp;
-      dprintf(clt->fd, "You joined the channel %s\r\n", tmp->name);
-      tmp->nb_users += 1;
+  if (clt->cmd)
+  {
+    if (clt->cmd[1][0] == '#')
+    {
+      tmp = find_chan(serv->ch_head, clt->cmd[1]);
+      if (tmp == NULL) {
+	clt->chan = add_chan(serv->ch_head, clt->cmd[1], serv);
+	clt->chan->nb_users += 1;
+      } else {
+	clt->chan = tmp;
+	tmp->nb_users += 1;
+      }
+      dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->cmd[1]);
     }
+    else
+      dprintf(clt->fd, "403 %s %s :Invalid channel name\r\n", clt->nickname, clt->cmd[1]);
   }
   else
-    dprintf(clt->fd, "Missing argument\r\n");
+  dprintf(clt->fd, "421 Wrong Command\r\n");
 }
 
 void 	f_part(t_client *clt, t_serv *serv)

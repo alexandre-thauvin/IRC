@@ -32,7 +32,6 @@ void 		handle_client(t_client *clt, t_serv *serv)
   char 		*buf;
   int 		ret = 0;
 
-
   if ((buf = malloc(512 * sizeof (char))) == NULL)
   {
     close_all(serv);
@@ -41,6 +40,10 @@ void 		handle_client(t_client *clt, t_serv *serv)
   memset(buf, '\0', 512);
   serv->tab = ma2d(11, 12, serv);
   serv->tab = fill_tab(serv->tab);
+  if (read(clt->fd, buf, 512) <= 0)
+  {
+    close(clt->fd);
+  }
   if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1) {
     if (buff_manage(clt, buf))
     {
@@ -48,6 +51,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
       choice(serv, clt->fd);
     }
   }
+  free(buf);
 }
 
 t_client	*clt_var(char **av, t_serv *serv)
@@ -92,9 +96,8 @@ void		check_select(t_client *head, fd_set *readfds, t_serv *serv)
   tmp = tmp->next;
   while (tmp)
   {
-    if (FD_ISSET(tmp->fd, readfds)) {
+    if (FD_ISSET(tmp->fd, readfds))
       handle_client(tmp, serv);
-    }
     tmp = tmp->next;
   }
 }
@@ -139,7 +142,7 @@ int			main(int ac, char **av)
     set_fd(&readfds, serv.head);
     ret_selec = select(max_fd(serv.head) + 1, &readfds, NULL, NULL, &tv);
     if (ret_selec == -1)
-     printf("Error Select\n");
+     printf("Client Closed\n");
     check_select(serv.head, &readfds, &serv);
     }
 }

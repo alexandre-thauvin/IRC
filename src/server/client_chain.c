@@ -31,6 +31,7 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
   new->next = NULL;
   new->fd = fd;
   new->chan = NULL;
+  new->nickname = "Anonymous ";
   dprintf(fd, "001 Welcome\r\n");
   if (head->next == NULL)
     head->next = new;

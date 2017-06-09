@@ -36,8 +36,7 @@ void		fill_cmd(t_client *head, int fd, t_serv *serv)
   if ((cmd = malloc((tmp->rear - tmp->front + 5) * sizeof(char))) == NULL)
     quit_error(serv);
 
-//  printf("|%s| // %d\n", tmp->buff_circu, tmp->rear - tmp->front);
-while (i <= tmp->rear)
+  while (i <= tmp->rear)
   {
     cmd[z] = tmp->buff_circu[i];
     z++;

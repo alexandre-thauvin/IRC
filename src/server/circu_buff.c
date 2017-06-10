@@ -45,7 +45,7 @@ void		f_user(t_client *clt, t_serv *srv)
     dprintf(clt->fd, "461 Not enough argument\r\n");
     else if (i > 5)
     dprintf(clt->fd, "461 Too much argument\r\n");
-  else if (clt->user != NULL)
+  else if (clt->user != false)
     dprintf(clt->fd, "462 You can't register you again\r\n");
   else if (clt->cmd[1])
   {

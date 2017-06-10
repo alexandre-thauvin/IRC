@@ -71,7 +71,7 @@ void	print_at_all(t_client *clt, t_serv *serv)
   {
     if (tmp->fd != clt->fd)
     {
-       if (tmp->chan && tmp->chan[10])
+       if (tmp->chan && tmp->chan[10] && clt->chan[10] && clt->chan[10]->name)
        {
 	 if (strcmp(clt->chan[10]->name, tmp->chan[10]->name) == 0)
 	   cond_print_at_all(clt, tmp);

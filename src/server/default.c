@@ -13,7 +13,7 @@
 void	choice(t_serv *serv, int fd)
 {
   void		(*func[11])(t_client *, t_serv *) = {f_nick, f_user, f_list, f_join, f_part,
-				       f_users, f_names, f_msg, f_send_file, f_accept_file, f_quit};
+				       f_users, f_names, f_msg,  f_send_file, f_accept_file, f_quit};
   void		(*funci)(t_client *, t_serv *);
   int		i;
   t_client	*tmp;

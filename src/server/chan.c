@@ -56,29 +56,16 @@ t_chan		*add_chan(char *name, t_serv *serv)
     if ((serv->ch_head->name = malloc((strlen(name) + 1) * sizeof(char))) == NULL)
       quit_error(serv);
     serv->ch_head->name = strcpy(serv->ch_head->name, name);
-    printf("%p\n", &serv->ch_head->name);
     return serv->ch_head;
-    printf("JE RETURN PAS\n");
   }
   else
   {
     if ((new = malloc(sizeof (t_chan))) == NULL)
       quit_error(serv);
-    current = serv->ch_head;
     if (new == NULL)
       fprintf(stderr, "Unable to allocate memory for new node\n");
-    new->next = NULL;
-    if ((new->name = malloc((strlen(name) + 1) * sizeof(char))) == NULL)
-      quit_error(serv);
-    new->name = strcpy(new->name, name);
-    new->nb_users = 1;
-    if (serv->ch_head->next == NULL)
-      serv->ch_head->next = new;
-    else {
-      while (current->next != NULL)
-	current = current->next;
-      current->next = new;
-    }
+    current = serv->ch_head;
+    cond_add_chan(serv, new, current, name);
     return (new);
   }
 }

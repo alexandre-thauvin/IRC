@@ -34,30 +34,11 @@ void 	f_list(t_client *clt, t_serv *serv)
 }
 void 		f_join(t_client *clt, t_serv *serv)
 {
-  t_chan	*tmp;
 
   if (clt->cmd)
   {
     if (clt->cmd[1][0] == '#')
-    {
-      if (serv->ch_head) {
-	tmp = find_chan(serv->ch_head, clt->cmd[1]);
-	if (tmp == NULL) {
-	  clt->chan = add_chan(clt->cmd[1], serv);
-	  clt->chan->nb_users += 1;
-	} else {
-	  clt->chan = tmp;
-	  tmp->nb_users += 1;
-	}
-	dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->cmd[1]);
-      }
-      else
-      {
-	clt->chan = add_chan(clt->cmd[1], serv);
-	printf(":%s JOIN : %s\r\n", clt->nickname, serv->ch_head->name);
-	dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, serv->ch_head->name);
-      }
-    }
+      cond_join(clt, serv);
     else
       dprintf(clt->fd, "403 %s %s :Invalid channel name\r\n", clt->nickname, clt->cmd[1]);
   }
@@ -76,17 +57,16 @@ void 	f_part(t_client *clt, t_serv *serv)
 	  dprintf(clt->fd, "Please choose a channel.\r\n");
 	  dlt_chan(serv->ch_head, clt->cmd[1], serv);
 	}
+	  //propag_part(serv, clt);
       }
       else
-	dprintf(clt->fd, "BAD CHAN LOLOLOLOL\r\n");
+	dprintf(clt->fd, "Bad Chan\r\n");
     }
     else
       dprintf(clt->fd, "You are in any chan\r\n");
   }
   else
     dprintf(clt->fd, "Missing argument\r\n");
-
-  (void)serv;
 }
 
 void 	f_users(t_client *clt, t_serv *serv)
@@ -97,8 +77,6 @@ void 	f_users(t_client *clt, t_serv *serv)
   while (tmp)
   {
     dprintf(clt->fd, "%s", tmp->nickname);
-    if (strcmp(tmp->nickname, "Anonymous-") == 0)
-      dprintf(clt->fd, "%d", tmp->fd);
     tmp = tmp->next;
     if (tmp)
       dprintf(clt->fd, "\n");

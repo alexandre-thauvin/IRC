@@ -25,13 +25,7 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
   memset(new->buff_circu, '\0', 512);
   if ((new->nickname = malloc(512 * sizeof(char))) == NULL)
     quit_error(serv);
-  new->nickname = "Anonymous-";
-  new->front = 0;
-  new->rear = 0;
-  new->next = NULL;
-  new->fd = fd;
-  new->chan = NULL;
-  new->nickname = "Anonymous ";
+  init_addToChain(new, fd);
   dprintf(fd, "001 Welcome\r\n");
   if (head->next == NULL)
     head->next = new;

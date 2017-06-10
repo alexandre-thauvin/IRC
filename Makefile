@@ -32,7 +32,9 @@ SRC2    = $(DIR2)main.c \
 	$(DIR2)receive.c \
 	$(DIR2)client_chain.c \
 	$(DIR2)circu_buff.c \
-	$(DIR2)chan.c
+	$(DIR2)chan.c \
+	$(DIR2)cond.c \
+	$(DIR2)propagation.c
 
 OBJ1	= $(SRC1:.c=.o)
 

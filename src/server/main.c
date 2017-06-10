@@ -44,7 +44,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
   {
     close(clt->fd);
   }
-  if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1) {
+  if ((ret = (int)read(clt->fd, clt->buff_circu, 512)) > 0 && ret < 511 && ret > 1) {
     if (buff_manage(clt, buf))
     {
       fill_cmd(serv->head, clt->fd, serv);

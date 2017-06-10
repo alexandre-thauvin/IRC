@@ -10,17 +10,35 @@
 
 #include "server.h"
 
-void 		propag_part(t_serv *serv, t_client *clt)
-{
-
-}
-
-void 		propag_nick(t_serv *serv, t_client *clt)
-{
-
-}
-
 void 		propag_join(t_serv *serv, t_client *clt)
 {
+  t_client	*tmp;
 
+  tmp = serv->head->next;
+  while (tmp)
+  {
+      if (tmp->chan)
+      {
+	if (strcmp(clt->chan->name, tmp->chan->name) == 0)
+	  dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->chan->name);
+      }
+    tmp = tmp->next;
+  }
 }
+
+/*
+void 		propag_part(t_serv *serv, t_client *clt)
+{
+  t_client	*tmp;
+
+  tmp = serv->head->next;
+  while (tmp)
+  {
+    if (tmp->chan)
+    {
+      if (strcmp(clt->chan->name, tmp->chan->name) == 0)
+	//todo: dprintf du part
+    }
+    tmp = tmp->next;
+  }
+}*/

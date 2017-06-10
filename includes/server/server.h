@@ -80,9 +80,15 @@ void 		close_all(t_serv *);
 t_chan		*add_chan(char *, t_serv *);
 t_chan		*find_chan(t_chan *, char *);
 void		aff_chan(t_chan *, int);
-void 		dlt_chan(t_chan *, char *, t_serv *s);
-void		quit_error(t_serv *serv);
+void 		dlt_chan(t_chan *, char *, t_serv *);
+void		quit_error(t_serv *);
 void 		dltFromChain(t_client *, int);
 t_chan		*set_chan(t_serv *);
+void 		propag_join(t_serv *, t_client *);
+void 		propag_part(t_serv *, t_client *);
+void		cond_join(t_client *, t_serv *);
+void		cond_print_at_all(t_client *, t_client *);
+void		cond_add_chan(t_serv *, t_chan *, t_chan *, char *);
+void		init_addToChain(t_client *, int);
 
 #endif //IRC_H

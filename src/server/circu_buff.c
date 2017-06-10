@@ -48,8 +48,10 @@ bool		buff_manage(t_client *clt, char *buff_tmp)
 {
   clt->n = 512;
   clt->buff_circu = cpy(clt, buff_tmp);
-  if (check_end(clt))
+  if (check_end(clt)) {
+    printf("telnet work\n");
     return true;
+  }
   else
     return false;
 }

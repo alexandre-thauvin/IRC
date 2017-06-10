@@ -49,6 +49,7 @@ typedef struct 		s_client
   unsigned int		n;
   char 			**cmd;
   t_chan		**chan;
+  int 			registered;
 }			t_client;
 
 typedef struct 		s_serv

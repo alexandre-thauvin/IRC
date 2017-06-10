@@ -128,6 +128,7 @@ void		init_addToChain(t_client *new, int fd, t_serv *serv)
     new->chan[i] = NULL;
     i++;
   }
-  new->next = NULL;
-  new->nickname = "Anonymous";
+  new->user = 0;
+  new->nickname = "anonymous";
+  new->registered = 0;
 }

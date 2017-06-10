@@ -32,6 +32,12 @@ void	choice(t_serv *serv, int fd)
   }
   else
     print_at_all(tmp, serv);
+  if (tmp->registered == 0 && strcmp(tmp->nickname, "anonymous") != 0 && tmp->user != false)
+  {
+    dprintf(tmp->fd, "001 %s :Welcome\r\n", tmp->cmd[1]);
+    tmp->registered = 1;
+  }
+
 }
 
 bool 	check_end(t_client *clt)

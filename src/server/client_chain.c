@@ -26,7 +26,6 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
   if ((new->nickname = malloc(512 * sizeof(char))) == NULL)
     quit_error(serv);
   init_addToChain(new, fd, serv);
-  dprintf(fd, "001 Welcome\r\n");
   if (head->next == NULL)
     head->next = new;
   else

@@ -48,12 +48,7 @@ void		f_user(t_client *clt, t_serv *srv)
   else if (clt->user != false)
     dprintf(clt->fd, "462 You can't register you again\r\n");
   else if (clt->cmd[1])
-  {
-    /*if ((clt->user = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
-      quit_error(srv);*/
-    //clt->user = strcpy(clt->user, clt->cmd[1]);
-    clt->user = false;
-  }
+    clt->user = true;
   srv->head = srv->head;
 
 }

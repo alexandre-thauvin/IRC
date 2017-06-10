@@ -16,12 +16,6 @@ void 	f_nick(t_client *clt, t_serv *serv)
   t_client *tmp;
 
   tmp = serv->head->next;
-  if (clt->registered == 0 && clt->user == false)
-  {
-    clt->registered = 1;
-    dprintf(clt->fd, "001 Welcome\r\n");
-  }
-
   if (strcmp(clt->cmd[1], "anonymous" ) == 0)
   {
     dprintf(clt->fd, "432 nickname invalid\r\n");

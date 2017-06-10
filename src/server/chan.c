@@ -25,7 +25,8 @@ void		aff_chan(t_chan *head, int fd)
   tmp = head;
   while (tmp)
   {
-    dprintf(fd, "%s", tmp->name);
+    if (tmp->name)
+      dprintf(fd, "%s", tmp->name);
     tmp = tmp->next;
     if (tmp)
       dprintf(fd, "\n");

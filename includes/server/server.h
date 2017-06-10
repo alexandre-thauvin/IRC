@@ -40,7 +40,7 @@ typedef struct 		s_client
 {
   struct sockaddr_in	s_in_client;
   int 			fd;
-  char 			*user;
+  bool 			user;
   char 			*nickname;
   struct s_client	*next;
   char 			*buff_circu;

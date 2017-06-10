@@ -106,7 +106,7 @@ void		cond_print_at_all(t_client *clt, t_client *tmp)
 
   i = 0;
 
-  dprintf(tmp->fd, "[%s] %s", tmp->chan[10]->name, clt->nickname);
+  dprintf(tmp->fd, "[%s] %s: ", tmp->chan[10]->name, clt->nickname);
   while (clt->cmd[i])
   {
     dprintf(tmp->fd, "%s", clt->cmd[i]);
@@ -151,7 +151,7 @@ void		init_addToChain(t_client *new, int fd, t_serv *serv)
     new->chan[i] = NULL;
     i++;
   }
-  new->user = 0;
+  new->user = false;
   new->nickname = "anonymous";
   new->registered = 0;
 }

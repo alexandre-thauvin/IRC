@@ -48,16 +48,22 @@ void 		f_join(t_client *clt, t_serv *serv)
 
 void 	f_part(t_client *clt, t_serv *serv)
 {
-  if (clt->cmd[1]) {
-    if (serv->ch_head && clt->chan) {
-      if (strcmp(clt->cmd[1], clt->chan->name) == 0) {
-	clt->chan->nb_users -= 1;
-	if (clt->chan->nb_users == 0) {
-	  dprintf(clt->fd, "Deleted channel: %s\n", clt->chan->name);
+  t_chan	*tmp;
+
+  if (clt->cmd[1])
+  {
+    if (serv->ch_head && clt->chan)
+    {
+      if ((tmp = check_chan(clt)))
+      {
+	tmp->nb_users -= 1;
+	propag_part(serv, clt);
+	if (tmp->nb_users == 0)
+	{
+	  dprintf(clt->fd, "Deleted channel: %s\n", tmp->name);
 	  dprintf(clt->fd, "Please choose a channel.\r\n");
 	  dlt_chan(serv->ch_head, clt->cmd[1], serv);
 	}
-	  //propag_part(serv, clt);
       }
       else
 	dprintf(clt->fd, "Bad Chan\r\n");

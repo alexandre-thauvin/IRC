@@ -22,12 +22,19 @@
 # include <arpa/inet.h>
 # include <stdbool.h>
 
+
 typedef struct		s_chan
 {
   char 			*name;
   unsigned int		nb_users;
   struct s_chan		*next;
 }			t_chan;
+
+typedef struct		s_ch_chan
+{
+  struct s_chan		*chan;
+  struct s_chan		*next;
+}			t_ch_chan;
 
 typedef struct 		s_client
 {
@@ -41,7 +48,7 @@ typedef struct 		s_client
   unsigned int		rear;
   unsigned int		n;
   char 			**cmd;
-  t_chan		*chan;
+  t_chan		**chan;
 }			t_client;
 
 typedef struct 		s_serv
@@ -89,6 +96,8 @@ void 		propag_part(t_serv *, t_client *);
 void		cond_join(t_client *, t_serv *);
 void		cond_print_at_all(t_client *, t_client *);
 void		cond_add_chan(t_serv *, t_chan *, t_chan *, char *);
-void		init_addToChain(t_client *, int);
+void		init_addToChain(t_client *, int, t_serv *);
+t_chan		*check_chan(t_client *);
+int		find_empty(t_chan **tab);
 
 #endif //IRC_H

@@ -38,8 +38,12 @@ t_chan		*find_chan(t_chan *head, char *name)
   t_chan	*tmp;
 
   tmp = head;
-  while (tmp &&  strcmp(name, tmp->name) != 0)
+  while (tmp)
+  {
+    if (strcmp(name, tmp->name) == 0)
+      return tmp;
     tmp = tmp->next;
+  }
   return (tmp);
 }
 

@@ -99,6 +99,8 @@ void		cond_print_at_all(t_client *, t_client *);
 void		cond_add_chan(t_serv *, t_chan *, t_chan *, char *);
 void		init_addToChain(t_client *, int, t_serv *);
 t_chan		*check_chan(t_client *);
-int		find_empty(t_chan **tab);
+int		find_empty(t_chan **);
+void		*print_chan(t_client *);
+int 		find_it(t_client *clt, char *);
 
 #endif //IRC_H

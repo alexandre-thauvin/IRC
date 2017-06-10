@@ -10,6 +10,17 @@
 
 #include "server.h"
 
+int 	find_it(t_client *clt, char *name)
+{
+  int 		i;
+
+  i = 0;
+
+  while (clt->chan[i] && (strcmp(clt->chan[i]->name, name) != 0) && i < 10)
+    i++;
+  return (i);
+}
+
 int	find_empty(t_chan **tab)
 {
   unsigned int		i;
@@ -17,7 +28,7 @@ int	find_empty(t_chan **tab)
   i = 0;
   while (i < 10)
   {
-    if (!tab[i])
+    if (tab[i] == NULL)
       return (i);
     i++;
   }
@@ -29,13 +40,12 @@ void 		propag_join(t_serv *serv, t_client *clt)
   t_client	*tmp;
 
   tmp = serv->head->next;
-  (void)serv;
   while (tmp)
   {
-      if (tmp->chan)
+      if (tmp->chan[10])
       {
 	if (strcmp(clt->chan[10]->name, tmp->chan[10]->name) == 0)
-	  dprintf(clt->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->chan[10]->name);
+	  dprintf(tmp->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->chan[10]->name);
       }
     tmp = tmp->next;
   }
@@ -46,8 +56,7 @@ void 		propag_part(t_serv *serv, t_client *clt)
 {
   t_client	*tmp;
 
-  tmp = clt;
-  (void)serv;
+  tmp = serv->head->next;
   while (tmp)
   {
       if (check_chan(tmp))

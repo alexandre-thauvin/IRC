@@ -49,10 +49,11 @@ void 	f_nick(t_client *clt, t_serv *serv)
 
 void 	f_list(t_client *clt, t_serv *serv)
 {
-  if (serv->ch_head) {
+  /*if (serv->ch_head) {
     if (clt->cmd[1] == NULL)
       aff_chan(serv->ch_head, clt->fd);
-  }
+  }*/
+  print_chan(clt);
 }
 
 void 		f_join(t_client *clt, t_serv *serv)
@@ -79,8 +80,10 @@ void 	f_part(t_client *clt, t_serv *serv)
     {
       if ((tmp = check_chan(clt)))
       {
-	tmp->nb_users -= 1;
 	propag_part(serv, clt);
+	tmp->nb_users -= 1;
+	clt->chan[find_it(clt, clt->cmd[1])] = NULL;
+	clt->chan[10] = NULL;
 	if (tmp->nb_users == 0)
 	{
 	  dprintf(clt->fd, "Deleted channel: %s\n", tmp->name);

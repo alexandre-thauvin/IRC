@@ -10,6 +10,22 @@
 
 #include "server.h"
 
+void		*print_chan(t_client *clt)
+{
+  unsigned int		i;
+
+  i = 0;
+  while (i < 11)
+  {
+    if (clt->chan[i])
+    {
+     printf("chan: %s // %d\n", clt->chan[i]->name, i);
+    }
+    i++;
+  }
+  return NULL;
+}
+
 
 t_chan		*check_chan(t_client *clt)
 {
@@ -31,18 +47,22 @@ t_chan		*check_chan(t_client *clt)
 void		cond_join(t_client *clt, t_serv *serv)
 {
   t_chan	*tmp;
-  //t_chan	*ch_tmp;
   int 		i;
 
-  i = 0;
   if (serv->ch_head)
   {
     tmp = find_chan(serv->ch_head, clt->cmd[1]);
     if (tmp == NULL)
     {
+      if ((i = find_empty(clt->chan)) == -1)
+      {
+	dprintf(clt->fd, "405 %s:Too Many channels\r\n", clt->cmd[1]);
+	return ;
+      }
       clt->chan[10] = add_chan(clt->cmd[1], serv);
       clt->chan[10]->nb_users += 1;
-      clt->chan[find_empty(clt->chan)] = clt->chan[10];
+      clt->chan[i] = clt->chan[10];
+      printf("[if]\n");
     }
     else
     {
@@ -58,12 +78,15 @@ void		cond_join(t_client *clt, t_serv *serv)
 	  dprintf(clt->fd, "405 %s:Too Many channels\r\n", clt->cmd[1]);
 	  return ;
 	}
+
+	printf("[else]push at : %d\n", i);
+	clt->chan[10] = tmp;
 	if ((clt->chan[10]->nb_users += 1) > 50)
 	{
 	  dprintf(clt->fd, "471 %s:Too many people\r\n", clt->cmd[1]);
+	  clt->chan[10] = NULL;
 	  return ;
 	}
-	clt->chan[10] = tmp;
 	clt->chan[i] = clt->chan[10];
       }
     }

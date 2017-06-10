@@ -15,10 +15,10 @@ void 	f_nick(t_client *clt, t_serv *serv)
 {
   if (clt->cmd[1])
   {
+    dprintf(clt->fd, ":%s NICK %s\r\n", clt->nickname, clt->cmd[1]);
     if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
       quit_error(serv);
     clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
-    dprintf(clt->fd, ":%s NICK %s\r\n", clt->nickname, clt->cmd[1]);
   }
   else
     dprintf(clt->fd, "Bad command\r\n");

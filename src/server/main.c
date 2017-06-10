@@ -40,16 +40,15 @@ void 		handle_client(t_client *clt, t_serv *serv)
   memset(buf, '\0', 512);
   serv->tab = ma2d(11, 12, serv);
   serv->tab = fill_tab(serv->tab);
-  /*if (read(clt->fd, buf, 512) <= 0)
-    close(clt->fd);*/
   if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1) {
-    //printf("buf: |%s|", buf);
     if (buff_manage(clt, buf))
     {
       fill_cmd(serv->head, clt->fd, serv);
       choice(serv, clt->fd);
     }
   }
+  else if (read(clt->fd, buf, 512) <= 0)
+    close(clt->fd);
   free(buf);
 }
 

@@ -31,15 +31,28 @@ char		*cpy(t_client *clt, char *src)
 
 void		f_user(t_client *clt, t_serv *srv)
 {
-  if (clt->cmd[1])
+  int i;
+
+  i = 0;
+  if (clt->registered == 0 && strcmp(clt->nickname, "anonymous") != 0)
+  {
+    clt->registered = 1;
+    dprintf(clt->fd, "001 Welcome\r\n");
+  }
+  while (clt->cmd[i])
+  i++;
+  if (i < 5)
+    dprintf(clt->fd, "461 Not enough argument\r\n");
+    else if (i > 5)
+    dprintf(clt->fd, "461 Too much argument\r\n");
+  else if (clt->user != NULL)
+    dprintf(clt->fd, "462 You can't register you again\r\n");
+  else if (clt->cmd[1])
   {
     if ((clt->user = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
       quit_error(srv);
-    printf("change user : %s\n", clt->cmd[1]);
     clt->user = strcpy(clt->user, clt->cmd[1]);
   }
-  else
-    dprintf(clt->fd, "Bad command\r\n");
   srv->head = srv->head;
 
 }
@@ -48,10 +61,8 @@ bool		buff_manage(t_client *clt, char *buff_tmp)
 {
   clt->n = 512;
   clt->buff_circu = cpy(clt, buff_tmp);
-  if (check_end(clt)) {
-    printf("telnet work\n");
+  if (check_end(clt))
     return true;
-  }
   else
     return false;
 }

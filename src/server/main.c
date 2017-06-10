@@ -9,6 +9,7 @@
 */
 
 #include <stdio.h>
+#include <sys/socket.h>
 #include "server.h"
 
 char		**fill_tab(char **tab)

@@ -73,11 +73,12 @@ void		cond_add_chan(t_serv *serv, t_chan *new, t_chan *current, char *name)
 
 void		init_addToChain(t_client *new, int fd)
 {
-  new->nickname = "Anonymous-";
   new->front = 0;
   new->rear = 0;
   new->next = NULL;
   new->fd = fd;
   new->chan = NULL;
-  new->nickname = "Anonymous ";
+  new->user = 0;
+  new->nickname = "anonymous";
+  new->registered = 0;
 }

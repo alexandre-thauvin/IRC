@@ -34,7 +34,7 @@ t_client		*addToChain(t_client *head, int fd, t_serv *serv)
 	current = current->next;
     current->next = new;
   }
-  return new;
+  return (new);
 }
 
 void 		dltFromChain(t_client *head, int fd)
@@ -47,7 +47,7 @@ void 		dltFromChain(t_client *head, int fd)
     if (tmp->next == NULL)
     {
       printf("There is only one node.\n");
-      return;
+      return ;
     }
     head->fd = head->next->fd;
     head->next = head->next->next;

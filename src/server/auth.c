@@ -25,7 +25,6 @@ void 	f_names(t_client *clt, t_serv *serv)
     else
       dprintf(clt->fd, "\r\n");
   }
-  //todo: segfault lors de 2 clients pas dans le même channel
 }
 
 void 	f_msg(t_client *clt, t_serv *serv)

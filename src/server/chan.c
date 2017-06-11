@@ -15,7 +15,7 @@ t_chan		*set_chan(t_serv *serv)
 {
   if ((serv->ch_head = malloc(sizeof(t_chan))) == NULL)
     quit_error(serv);
-  return serv->ch_head;
+  return (serv->ch_head);
 }
 
 void		aff_chan(t_chan *head, int fd)
@@ -42,7 +42,7 @@ t_chan		*find_chan(t_chan *head, char *name)
   while (tmp)
   {
     if (strcmp(name, tmp->name) == 0)
-      return tmp;
+      return (tmp);
     tmp = tmp->next;
   }
   return (tmp);
@@ -58,10 +58,11 @@ t_chan		*add_chan(char *name, t_serv *serv)
     serv->ch_head = set_chan(serv);
     serv->ch_head->next = NULL;
     serv->ch_head->nb_users = 1;
-    if ((serv->ch_head->name = malloc((strlen(name) + 1) * sizeof(char))) == NULL)
+    if ((serv->ch_head->name = malloc((strlen(name) + 1) *
+                                       sizeof(char))) == NULL)
       quit_error(serv);
     serv->ch_head->name = strcpy(serv->ch_head->name, name);
-    return serv->ch_head;
+    return (serv->ch_head);
   }
   else
   {
@@ -85,7 +86,7 @@ void 		dlt_chan(t_chan *head, char *name, t_serv *serv)
     if (tmp->next == NULL)
     {
       serv->ch_head = NULL;
-      return;
+      return ;
     }
     head->name = head->next->name;
     head->next = head->next->next;

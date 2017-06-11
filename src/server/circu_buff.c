@@ -26,7 +26,7 @@ char		*cpy(t_client *clt, char *src)
     clt->rear++;
     i++;
   }
-  return clt->buff_circu;
+  return (clt->buff_circu);
 }
 
 void		f_user(t_client *clt, t_serv *srv)
@@ -65,7 +65,7 @@ bool		buff_manage(t_client *clt, char *buff_tmp)
   clt->n = 512;
   clt->buff_circu = cpy(clt, buff_tmp);
   if (check_end(clt))
-    return true;
+    return (true);
   else
-    return false;
+    return (false);
 }

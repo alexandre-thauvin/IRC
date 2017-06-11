@@ -18,6 +18,7 @@ void	choice(t_serv *serv, int fd)
   int		i;
   t_client	*tmp;
   int 		u = 0;
+  static int 	check = 0;
 
   i = 0;
   tmp = find_clt(serv->head, fd, serv);
@@ -25,13 +26,18 @@ void	choice(t_serv *serv, int fd)
     u++;
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
+  printf("[default]cmd: %s\n", tmp->cmd[0]);
   if (i <= 10)
   {
     funci = func[i];
     (*funci)(tmp, serv);
   }
   else
-    print_at_all(tmp, serv);
+  {
+    if (check == 1)
+      print_at_all(tmp, serv);
+    check = 1;
+  }
   if (tmp->registered == 0 && strcmp(tmp->nickname, "anonymous") != 0 && tmp->user != false)
   {
     dprintf(tmp->fd, "001 %s :Welcome\r\n", tmp->cmd[1]);

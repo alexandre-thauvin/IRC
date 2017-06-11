@@ -42,7 +42,7 @@ void 		propag_join(t_serv *serv, t_client *clt)
   tmp = serv->head->next;
   while (tmp)
   {
-      if (tmp->chan[10])
+      if (tmp->chan[10] && clt->chan[10])
       {
 	if (strcmp(clt->chan[10]->name, tmp->chan[10]->name) == 0)
 	  dprintf(tmp->fd, ":%s JOIN : %s\r\n", clt->nickname, clt->chan[10]->name);

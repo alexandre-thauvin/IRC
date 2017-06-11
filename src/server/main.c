@@ -35,7 +35,7 @@ void 		handle_client(t_client *clt, t_serv *serv)
 
   if ((buf = malloc(512 * sizeof (char))) == NULL)
   {
-    close_all(serv);
+    quit_error(serv);
     exit(1);
   }
   memset(buf, '\0', 512);
@@ -50,7 +50,10 @@ void 		handle_client(t_client *clt, t_serv *serv)
     }
   }
   else if (read(clt->fd, buf, 512) <= 0)
+  {
+    dltFromChain(serv->head, clt->fd);
     close(clt->fd);
+  }
   free(buf);
 }
 
@@ -142,7 +145,7 @@ int			main(int ac, char **av)
     set_fd(&readfds, serv.head);
     ret_selec = select(max_fd(serv.head) + 1, &readfds, NULL, NULL, &tv);
     if (ret_selec == -1)
-     printf("Client Closed\n");
+      quit_error(&serv);
     check_select(serv.head, &readfds, &serv);
     }
 }

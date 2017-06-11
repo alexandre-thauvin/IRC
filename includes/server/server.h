@@ -84,7 +84,6 @@ bool		buff_manage(t_client *, char *);
 void 		fill_cmd(t_client *, int, t_serv *);
 t_client	*find_clt(t_client *, int, t_serv *);
 void		print_at_all(t_client *, t_serv *);
-void 		close_all(t_serv *);
 t_chan		*add_chan(char *, t_serv *);
 t_chan		*find_chan(t_chan *, char *);
 void		aff_chan(t_chan *, int);

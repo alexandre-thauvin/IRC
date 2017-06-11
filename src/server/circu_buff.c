@@ -34,11 +34,6 @@ void		f_user(t_client *clt, t_serv *srv)
   int i;
 
   i = 0;
-  if (clt->registered == 0 && strcmp(clt->nickname, "anonymous") != 0)
-  {
-    clt->registered = 1;
-    dprintf(clt->fd, "001 Welcome\r\n");
-  }
   while (clt->cmd[i])
   i++;
   if (i < 5)
@@ -48,8 +43,14 @@ void		f_user(t_client *clt, t_serv *srv)
   else if (clt->user != false)
     dprintf(clt->fd, "462 You can't register you again\r\n");
   else if (clt->cmd[1])
+  {
     clt->user = true;
-  srv->head = srv->head;
+    if (clt->registered == 0 && strcmp(clt->nickname, "anonymous") != 0) {
+      clt->registered = 1;
+      dprintf(clt->fd, "001 Welcome\r\n");
+    }
+  }
+    srv->head = srv->head;
 
 }
 

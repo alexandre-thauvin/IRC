@@ -47,7 +47,6 @@ void 	f_list(t_client *clt, t_serv *serv)
     if (clt->cmd[1] == NULL)
       aff_chan(serv->ch_head, clt->fd);
   }
-  //print_chan(clt);
 }
 
 void 		f_join(t_client *clt, t_serv *serv)
@@ -114,7 +113,6 @@ void 	f_users(t_client *clt, t_serv *serv)
 
 void	f_quit(t_client *clt, t_serv *serv)
 {
-  (void)serv;
   close (clt->fd);
-  dltFromChain(clt, clt->fd);
+  dltFromChain(serv->head, clt->fd);
 }

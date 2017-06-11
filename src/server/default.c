@@ -12,8 +12,8 @@
 
 void	choice(t_serv *serv, int fd)
 {
-  void		(*func[11])(t_client *, t_serv *) = {f_nick, f_user, f_list, f_join, f_part,
-				       f_users, f_names, f_msg, f_send_file, f_accept_file, f_quit};
+  void		(*func[12])(t_client *, t_serv *) = {f_nick, f_user, f_list, f_join, f_part,
+				       f_users, f_names, f_msg,  f_send_file, f_accept_file, f_quit, f_cap};
   void		(*funci)(t_client *, t_serv *);
   int		i;
   t_client	*tmp;
@@ -26,7 +26,7 @@ void	choice(t_serv *serv, int fd)
     u++;
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
-  printf("[default]cmd: %s\n", tmp->cmd[0]);
+//  printf("[default]cmd: %s\n", tmp->cmd[0]);
   if (i <= 10)
   {
     funci = func[i];

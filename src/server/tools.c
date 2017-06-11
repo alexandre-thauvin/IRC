@@ -14,18 +14,13 @@
 
 void	quit_error(t_serv *serv)
 {
-  close_all(serv);
-  exit(1);
-}
-
-void 		close_all(t_serv *serv)
-{
   t_client *tmp;
 
   tmp = serv->head->next;
   while (tmp)
   {
     close (tmp->fd);
+    dltFromChain(serv->head, tmp->fd);
     tmp = tmp->next;
   }
   close(serv->head->fd);
@@ -82,9 +77,7 @@ char 	**ma2d(int line, int col, t_serv *serv)
 
   i = 0;
   if ((tab = malloc((line + 1) * sizeof(char *))) == NULL)
-  {
     quit_error(serv);
-  }
   while (i < line)
   {
     if ((tab[i] = malloc(col * sizeof(char))) == NULL)

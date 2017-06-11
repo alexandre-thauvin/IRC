@@ -33,7 +33,8 @@ void 	f_nick(t_client *clt, t_serv *serv)
   if (clt->cmd[1])
   {
     dprintf(clt->fd, ":%s NICK %s\r\n", clt->nickname, clt->cmd[1]);
-    if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1) * sizeof(char))) == NULL)
+    if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1)
+				* sizeof(char))) == NULL)
       quit_error(serv);
     clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
   }
@@ -57,7 +58,8 @@ void 		f_join(t_client *clt, t_serv *serv)
     if (clt->cmd[1][0] == '#')
       cond_join(clt, serv);
     else
-      dprintf(clt->fd, "403 %s %s : Invalid channel name\r\n", clt->nickname, clt->cmd[1]);
+      dprintf(clt->fd, "403 %s %s : Invalid channel name\r\n",
+	      clt->nickname, clt->cmd[1]);
   }
   else
   dprintf(clt->fd, "421 Wrong Command\r\n");
@@ -109,10 +111,4 @@ void 	f_users(t_client *clt, t_serv *serv)
       dprintf(clt->fd, "\r\n");
   }
   clt->nickname = clt->nickname;
-}
-
-void	f_quit(t_client *clt, t_serv *serv)
-{
-  close (clt->fd);
-  dltFromChain(serv->head, clt->fd);
 }

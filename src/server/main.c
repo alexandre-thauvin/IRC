@@ -29,35 +29,6 @@ char		**fill_tab(char **tab)
   tab[12] = NULL;
   return (tab);
 }
-void 		handle_client(t_client *clt, t_serv *serv)
-{
-  char 		*buf;
-  int 		ret = 0;
-
-  if ((buf = malloc(512 * sizeof (char))) == NULL)
-  {
-    quit_error(serv);
-    exit(1);
-  }
-  memset(buf, '\0', 512);
-  serv->tab = ma2d(12, 12, serv);
-  serv->tab = fill_tab(serv->tab);
-  if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1)
-  {
-    printf("%s", buf);
-    if (buff_manage(clt, buf))
-    {
-      fill_cmd(serv->head, clt->fd, serv);
-      choice(serv, clt->fd);
-    }
-  }
-  else if (read(clt->fd, buf, 512) <= 0)
-  {
-    dltFromChain(serv->head, clt->fd);
-    close(clt->fd);
-  }
-  free(buf);
-}
 
 t_client	*clt_var(char **av, t_serv *serv)
 {
@@ -124,18 +95,14 @@ int			main(int ac, char **av)
   t_serv		serv;
   fd_set		readfds;
   struct timeval 	tv;
-  int 			ret_selec;
 
   if ((serv.head = malloc(sizeof(t_client))) == NULL)
     quit_error(&serv);
-  if (ac != 2)
-  {
-    printf("Usage: ./server port\n");
-    return (1);
-  }
+  check_arg(ac);
   serv.head = clt_var(av, &serv);
   serv.ch_head = NULL;
-  if (bind(serv.head->fd, (const struct sockaddr *)&serv.head->s_in_client, sizeof(serv.head->s_in_client)) == -1)
+  if (bind(serv.head->fd, (const struct sockaddr *)&serv.head->s_in_client,
+	   sizeof(serv.head->s_in_client)) == -1)
     return (1);
   if (listen (serv.head->fd, 42 == -1) == -1)
     return (1);
@@ -145,8 +112,8 @@ int			main(int ac, char **av)
     tv.tv_usec = 0;
     FD_ZERO(&readfds);
     set_fd(&readfds, serv.head);
-    ret_selec = select(max_fd(serv.head) + 1, &readfds, NULL, NULL, &tv);
-    if (ret_selec == -1)
+    serv.ret_selec = select(max_fd(serv.head) + 1, &readfds, NULL, NULL, &tv);
+    if (serv.ret_selec == -1)
       quit_error(&serv);
     check_select(serv.head, &readfds, &serv);
     }

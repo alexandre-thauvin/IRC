@@ -22,7 +22,9 @@ SRC2    = $(DIR2)main.c \
 	$(DIR2)circu_buff.c \
 	$(DIR2)chan.c \
 	$(DIR2)cond.c \
-	$(DIR2)propagation.c
+	$(DIR2)propagation.c \
+	$(DIR2)func_more.c \
+	$(DIR2)more.c
 
 OBJ2	= $(SRC2:.c=.o)
 

@@ -12,16 +12,16 @@
 
 void	choice(t_serv *serv, int fd)
 {
-  void		(*func[12])(t_client *, t_serv *) = {f_nick, f_user, f_list, f_join, f_part,
-				       f_users, f_names, f_msg,  f_send_file, f_accept_file, f_quit, f_cap};
+  void		(*func[12])(t_client *, t_serv *) = {f_nick, f_user,
+							   f_list, f_join, f_part,
+				       f_users, f_names, f_msg, f_send_file, f_accept_file, f_quit, f_cap};
   void		(*funci)(t_client *, t_serv *);
   t_client	*tmp;
   int 		u, i;
 
   i = u = 0;
   tmp = find_clt(serv->head, fd, serv);
-  while (tmp->cmd[u] != NULL)
-    u++;
+  u = ret_u(tmp);
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
   if (i <= 11)
@@ -31,7 +31,8 @@ void	choice(t_serv *serv, int fd)
   }
   else
     print_at_all(tmp, serv);
-  if (tmp->registered == 0 && strcmp(tmp->nickname, "anonymous") != 0 && tmp->user != false)
+  if (tmp->registered == 0 && strcmp(tmp->nickname, "anonymous")
+			      != 0 && tmp->user != false)
   {
     dprintf(tmp->fd, "001 %s :Welcome\r\n", tmp->cmd[1]);
     tmp->registered = 1;

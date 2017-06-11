@@ -59,6 +59,7 @@ typedef struct 		s_serv
   struct protoent	*pe;
   char 			**tab;
   t_chan		*ch_head;
+  int 			ret_selec;
 }			t_serv;
 
 void		choice(t_serv *, int);
@@ -100,7 +101,14 @@ void		cond_add_chan(t_serv *, t_chan *, t_chan *, char *);
 void		init_addToChain(t_client *, int, t_serv *);
 t_chan		*check_chan(t_client *);
 int		find_empty(t_chan **);
-void		*print_chan(t_client *);
 int 		find_it(t_client *clt, char *);
+void 		handle_client(t_client *, t_serv *);
+void		check_arg(int);
+void		set_fd(fd_set *, t_client *);
+void		check_select(t_client *, fd_set *, t_serv *);
+t_client	*clt_var(char **, t_serv *);
+char		**fill_tab(char **);
+void		print_join(t_client *, t_serv *);
+int 		ret_u(t_client *tmp);
 
 #endif //IRC_H

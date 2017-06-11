@@ -54,6 +54,12 @@ void		f_user(t_client *clt, t_serv *srv)
 
 }
 
+void		f_cap(t_client *clt, t_serv *serv)
+{
+  (void)serv;
+  dprintf(clt->fd, "001 Welcome\n");
+}
+
 bool		buff_manage(t_client *clt, char *buff_tmp)
 {
   clt->n = 512;

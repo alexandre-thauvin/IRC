@@ -77,6 +77,7 @@ void 		f_send_file(t_client *, t_serv *);
 void 		f_accept_file(t_client *, t_serv *);
 void 		f_user(t_client *, t_serv *);
 void 		f_quit(t_client *, t_serv *);
+void		f_cap(t_client *, t_serv *);
 t_client 	*addToChain(t_client *, int, t_serv *);
 int 		max_fd(t_client*);
 char		*cpy(t_client *, char *);

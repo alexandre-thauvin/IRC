@@ -25,7 +25,8 @@ char		**fill_tab(char **tab)
   tab[8] = "SEND_FILE";
   tab[9] = "ACCEPT_FILE";
   tab[10] = "QUIT";
-  tab[11] = NULL;
+  tab[11] = "CAP";
+  tab[12] = NULL;
   return (tab);
 }
 void 		handle_client(t_client *clt, t_serv *serv)
@@ -39,10 +40,11 @@ void 		handle_client(t_client *clt, t_serv *serv)
     exit(1);
   }
   memset(buf, '\0', 512);
-  serv->tab = ma2d(11, 12, serv);
+  serv->tab = ma2d(12, 12, serv);
   serv->tab = fill_tab(serv->tab);
   if ((ret = (int)read(clt->fd, buf, 512)) > 0 && ret < 511 && ret > 1)
   {
+    printf("%s", buf);
     if (buff_manage(clt, buf))
     {
       fill_cmd(serv->head, clt->fd, serv);

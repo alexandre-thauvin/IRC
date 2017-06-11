@@ -109,6 +109,8 @@ void		check_select(t_client *, fd_set *, t_serv *);
 t_client	*clt_var(char **, t_serv *);
 char		**fill_tab(char **);
 void		print_join(t_client *, t_serv *);
-int 		ret_u(t_client *tmp);
+int 		ret_u(t_client *);
+void		print_nick(t_client *, t_serv *);
+void		print_dlt(t_client *, t_serv *, t_chan *);
 
 #endif //IRC_H

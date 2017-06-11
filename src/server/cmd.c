@@ -31,13 +31,7 @@ void 	f_nick(t_client *clt, t_serv *serv)
     tmp = tmp->next;
   }
   if (clt->cmd[1])
-  {
-    dprintf(clt->fd, ":%s NICK %s\r\n", clt->nickname, clt->cmd[1]);
-    if ((clt->nickname = malloc((strlen(clt->cmd[1]) + 1)
-				* sizeof(char))) == NULL)
-      quit_error(serv);
-    clt->nickname = strcpy(clt->nickname, clt->cmd[1]);
-  }
+    print_nick(clt, serv);
   else
     dprintf(clt->fd, "\r\n");
 }
@@ -80,11 +74,7 @@ void 	f_part(t_client *clt, t_serv *serv)
 	clt->chan[find_it(clt, clt->cmd[1])] = NULL;
 	clt->chan[10] = NULL;
 	if (tmp->nb_users == 0)
-	{
-	  dprintf(clt->fd, "Deleted channel: %s\n", tmp->name);
-	  dprintf(clt->fd, "Please choose a channel.\r\n");
-	  dlt_chan(serv->ch_head, clt->cmd[1], serv);
-	}
+	  print_dlt(clt, serv, tmp);
       }
       else
 	dprintf(clt->fd, "Bad Chan\r\n");

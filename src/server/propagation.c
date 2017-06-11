@@ -65,3 +65,23 @@ void 		propag_part(t_serv *serv, t_client *clt)
     tmp = tmp->next;
   }
 }
+
+void 		propag_quit(t_serv *serv, t_client *clt)
+{
+  t_client	*tmp;
+  int 		i;
+
+  i = 0;
+  tmp = serv->head->next;
+  while (clt->chan[i])
+  {
+    while (tmp)
+    {
+      if (check_chan(tmp))
+	dprintf(tmp->fd, ":%s leave the channel : "
+	 "%s\r\n", clt->nickname, clt->cmd[1]);
+      tmp = tmp->next;
+    }
+    i++;
+  }
+}

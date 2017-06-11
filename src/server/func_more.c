@@ -47,6 +47,7 @@ void		check_arg(int ac)
 
 void	f_quit(t_client *clt, t_serv *serv)
 {
+  propag_quit(serv, clt);
   close (clt->fd);
   dltFromChain(serv->head, clt->fd);
 }

@@ -46,8 +46,7 @@ void 	f_list(t_client *clt, t_serv *serv)
 
 void 		f_join(t_client *clt, t_serv *serv)
 {
-
-  if (clt->cmd)
+  if (clt->cmd[1])
   {
     if (clt->cmd[1][0] == '#')
       cond_join(clt, serv);

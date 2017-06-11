@@ -62,6 +62,7 @@ void		cond_join(t_client *clt, t_serv *serv)
   }
   else
     print_join(clt, serv);
+  f_names(clt, serv);
 }
 
 void		cond_print_at_all(t_client *clt, t_client *tmp)

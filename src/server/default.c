@@ -24,6 +24,11 @@ void	choice(t_serv *serv, int fd)
   u = ret_u(tmp);
   while (serv->tab[i] != NULL && strcmp(tmp->cmd[0], serv->tab[i]) != 0)
     i++;
+  if (i > 1 && i != 10 && ((strcmp(tmp->nickname, "anonymous") == 0 || tmp->user == false)))
+  {
+    dprintf(tmp->fd, "444 You must be be log\r\n");
+    return ;
+  }
   if (i <= 11)
   {
     funci = func[i];

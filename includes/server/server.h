@@ -94,6 +94,7 @@ void		quit_error(t_serv *);
 void 		dltFromChain(t_client *, int);
 t_chan		*set_chan(t_serv *);
 void 		propag_join(t_serv *, t_client *);
+void 		propag_quit(t_serv *, t_client *);
 void 		propag_part(t_serv *, t_client *);
 void		cond_join(t_client *, t_serv *);
 void		cond_print_at_all(t_client *, t_client *);
